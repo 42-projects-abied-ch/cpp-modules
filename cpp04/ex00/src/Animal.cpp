@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Animal.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abied-ch <abied-ch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arthur <arthur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:43:53 by abied-ch          #+#    #+#             */
-/*   Updated: 2024/01/07 19:53:44 by abied-ch         ###   ########.fr       */
+/*   Updated: 2024/01/13 16:42:08 by arthur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 #include <iostream>
 
 Animal::Animal() : type("Some kind of animal"){
-	std::cout << "Animal constructor called" << std::endl;
-}
-
-Animal::Animal(std::string type) : type(type){
 	std::cout << "Animal constructor called" << std::endl;
 }
 
@@ -34,10 +30,6 @@ std::string Animal::getType(void) const{
 	return (this->type);
 }
 
-void Animal::setType(const std::string type){
-	this->type = type;
-}
-
 Animal &Animal::operator=(const Animal &other){
 	std::cout << "Animal assignation operator called" << std::endl;
 	this->type = other.type;
@@ -45,12 +37,7 @@ Animal &Animal::operator=(const Animal &other){
 }
 
 void Animal::makeSound() const{
-	if (this->type == "Cat")
-		std::cout << "Cat: Meow Meow!" << std::endl;
-	else if (this->type == "Dog")
-		std::cout << "Dog: Woof Woof!" << std::endl;
-	else
-		std::cout << "Animal: I am some kind of animal" << std::endl;
+	std::cout << "Some kind of animal makes a sound" << std::endl;
 }
 
 std::ostream	&operator<<(std::ostream &stream, const Animal &instance){

@@ -15,6 +15,8 @@ SRCS    = \
 		$(SRCS_DIR)/Animal.cpp \
 		$(SRCS_DIR)/Cat.cpp \
 		$(SRCS_DIR)/Dog.cpp \
+		$(SRCS_DIR)/WrongAnimal.cpp \
+		$(SRCS_DIR)/WrongCat.cpp \
 		$(SRCS_DIR)/main.cpp
 
 OBJS	= $(SRCS:${SRCS_DIR}/%.cpp=${OBJS_DIR}/%.o)

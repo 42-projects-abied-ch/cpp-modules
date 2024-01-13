@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Dog.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abied-ch <abied-ch@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arthur <arthur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:43:53 by abied-ch          #+#    #+#             */
-/*   Updated: 2024/01/07 19:53:58 by abied-ch         ###   ########.fr       */
+/*   Updated: 2024/01/13 16:49:17 by arthur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <iostream>
 
-Dog::Dog() : Animal("Dog"){
+Dog::Dog() : type("Dog"){
 	std::cout << "Dog constructor called" << std::endl;
 }
 
@@ -30,6 +30,14 @@ Dog::~Dog(){
 Dog &Dog::operator=(const Dog&){
 	std::cout << "Dog assignation operator called" << std::endl;
 	return (*this);
+}
+
+void Dog::makeSound() const{
+	std::cout << "Woof woof" << std::endl;
+}
+
+std::string Dog::getType() const{
+	return (this->type);
 }
 
 std::ostream	&operator<<( std::ostream &stream, const Dog & ){
