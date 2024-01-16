@@ -4,10 +4,10 @@
 #define DOG_HPP
 
 #include <iostream>
-#include "Animal.hpp"
+#include "AAnimal.hpp"
 #include "Brain.hpp"
 
-class Dog : virtual public Animal{
+class Dog : public AAnimal{
 	private:
 		std::string	type;
 		Brain		*brain;
@@ -19,7 +19,7 @@ class Dog : virtual public Animal{
 
 		void 				makeSound() const;
 		std::string			getType() const;
-		Brain				*getBrain() const;
+		Brain		*getBrain() const;
 };
 
 std::ostream	&operator<<(std::ostream &stream, const Dog &instance);

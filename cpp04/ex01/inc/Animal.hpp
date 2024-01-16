@@ -16,8 +16,8 @@ public:
 	Animal &operator=(const Animal &other);
 	
 	virtual std::string	getType() const;
-	virtual void makeSound() const;
-	virtual Brain		*getBrain() const = 0;
+	virtual void 		makeSound() const;
+	virtual Brain		*getBrain() const;
 };
 
 std::ostream	&operator<<( std::ostream &stream, const Animal &instance );

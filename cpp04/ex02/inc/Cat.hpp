@@ -5,9 +5,9 @@
 
 #include "Brain.hpp"
 #include <iostream>
-#include "Animal.hpp"
+#include "AAnimal.hpp"
 
-class Cat : virtual public Animal{
+class Cat : public AAnimal{
 	private:
 		std::string	type;
 		Brain		*brain;
