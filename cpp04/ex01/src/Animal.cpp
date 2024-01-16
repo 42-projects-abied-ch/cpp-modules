@@ -6,7 +6,7 @@
 /*   By: abied-ch <abied-ch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:43:53 by abied-ch          #+#    #+#             */
-/*   Updated: 2024/01/16 17:49:58 by abied-ch         ###   ########.fr       */
+/*   Updated: 2024/01/16 19:52:00 by abied-ch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ std::string Animal::getType(void) const{
 Animal &Animal::operator=(const Animal &other){
 	std::cout << "Animal assignation operator called" << std::endl;
 	this->type = other.type;
-	return (*this);
+	return *this;
 }
 
 void Animal::makeSound() const{

@@ -14,7 +14,9 @@ void	subjectMain(){
 
 int main(){
 	// const Animal* dog = new Dog();
-	const Animal* cat = new Cat();
+	Animal* cat = new Cat();
+	Animal* cat2 = new Cat();
+	*cat2 = *cat;
 	std::cout << RED << "\nIDEAS\n" << RESET << std::endl;
 	for (int i = 0; i < 100; i++)
 		std::cout << cat->getType() << " " << cat->getBrain()->getIdeas()[i] << std::endl;
@@ -30,6 +32,7 @@ int main(){
 	for (int i = 0; i < 4; i++)
 		delete animal_array[i];
 	delete cat;
+	delete cat2;
 	std::cout << std::endl;
 	subjectMain();
 }

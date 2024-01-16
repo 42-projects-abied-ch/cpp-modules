@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cat.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arthur <arthur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abied-ch <abied-ch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:43:53 by abied-ch          #+#    #+#             */
-/*   Updated: 2024/01/13 17:16:14 by arthur           ###   ########.fr       */
+/*   Updated: 2024/01/16 19:54:02 by abied-ch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ Cat::~Cat(){
 }
 
 Cat &Cat::operator=(const Cat &other){
-	if (this->brain != NULL)
-		delete this->brain;
-	this->brain = new Brain;
 	this->type = other.type;
-	std::cout << "Cat assignation operator called" << std::endl;
-	return (*this);
+	*this->brain = *other.getBrain();
+	std::cout << "Cat assignation operator called" << std::endl;	
+	return *this;
 }
 
 void Cat::makeSound() const{

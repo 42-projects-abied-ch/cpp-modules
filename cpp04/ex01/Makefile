@@ -29,7 +29,7 @@ all		: $(NAME)
 
 run		: re
 		@clear
-		@valgrind ./${NAME};
+		@valgrind --leak-check=full ./${NAME};
 		@$(RM) $(OBJS_DIR) $(NAME)
 
 test	: re

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Dog.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arthur <arthur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abied-ch <abied-ch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 14:43:53 by abied-ch          #+#    #+#             */
-/*   Updated: 2024/01/13 17:14:44 by arthur           ###   ########.fr       */
+/*   Updated: 2024/01/16 19:33:53 by abied-ch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ Dog::~Dog(){
 }
 
 Dog &Dog::operator=(const Dog &other){
-	if (this->brain != NULL)
-		delete this->brain;
+	// if (this->brain != NULL)
+	// 	delete this->brain;
 	this->brain = new Brain;
 	this->type = other.getType();
 	return *this;

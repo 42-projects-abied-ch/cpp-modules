@@ -13,7 +13,7 @@ void	subjectMain(){
 }
 
 int main(){
-	// const Animal* dog = new Dog();
+	const AAnimal* dog = new Dog();
 	const AAnimal* cat = new Cat();
 	std::cout << RED << "\nIDEAS\n" << RESET << std::endl;
 	for (int i = 0; i < 100; i++)
