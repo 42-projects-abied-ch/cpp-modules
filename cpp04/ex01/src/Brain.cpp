@@ -1,9 +1,13 @@
 #include "../inc/Brain.hpp"
+#include <sstream>
 
 Brain::Brain(){
     this->ideas = new std::string[100];
-    for (int i = 0; i < 100; i++)
-        this->ideas[i] = "Idea #" + std::to_string(i);
+    for (int i = 0; i < 100; i++){
+		std::ostringstream oss;
+		oss << "Idea #" << i + 1;
+        this->ideas[i] = oss.str();
+	}
     std::cout << "Brain constructor called" << std::endl;
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Brain.hpp"
 #ifndef ANIMAL_HPP
 # define ANIMAL_HPP
 
@@ -16,6 +17,7 @@ public:
 	
 	virtual std::string	getType() const;
 	virtual void makeSound() const;
+	virtual Brain		*getBrain() const = 0;
 };
 
 std::ostream	&operator<<( std::ostream &stream, const Animal &instance );

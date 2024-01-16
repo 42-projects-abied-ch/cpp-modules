@@ -7,7 +7,7 @@
 #include "Animal.hpp"
 #include "Brain.hpp"
 
-class Dog : public Animal{
+class Dog : virtual public Animal{
 	private:
 		std::string	type;
 		Brain		*brain;
@@ -15,10 +15,10 @@ class Dog : public Animal{
 		Dog();
 		Dog(const Dog &other);
 		~Dog();
-		Dog &operator=(const Dog &other);
+		Dog &operator = (const Dog &other);
 
-		void makeSound() const;
-		std::string	getType() const;
+		void 				makeSound() const;
+		std::string			getType() const;
 		Brain		*getBrain() const;
 };
 

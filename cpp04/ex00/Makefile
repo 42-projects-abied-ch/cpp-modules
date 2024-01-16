@@ -30,7 +30,7 @@ all		: $(NAME)
 
 run		: re
 		@clear
-		@./${NAME};
+		@valgrind ./${NAME};
 		@$(RM) $(OBJS_DIR) $(NAME)
 
 test	: re
