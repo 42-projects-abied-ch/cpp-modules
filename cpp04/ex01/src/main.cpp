@@ -5,24 +5,39 @@
 #include "../inc/macros.h"
 
 void	subjectMain(){
-	std::cout << RED << "\nSUBJECT MAIN\n" << RESET << std::endl;
 	const Animal* j = new Dog();
 	const Animal* i = new Cat();
-	delete j;//should not create a leak
+	delete j;
 	delete i;
 }
 
-int main(){
-	// const Animal* dog = new Dog();
-	Animal* cat = new Cat();
-	Animal* cat2 = new Cat();
-	*cat2 = *cat;
-	std::cout << RED << "\nIDEAS\n" << RESET << std::endl;
+void	assignationOperator(){
+	const Animal *cat = new Cat();
+	Cat *cat1 = new Cat();
+	Animal *cat2 = new Cat();
+	Cat *cat4 = new Cat();
+	*cat4 = *cat1;
+	std::cout << BOLDGREEN << "\nIDEAS\n" << RESET << std::endl;
 	for (int i = 0; i < 100; i++)
-		std::cout << cat->getType() << " " << cat->getBrain()->getIdeas()[i] << std::endl;
+		std::cout << cat->getType() << " " << cat4->getBrain()->getIdeas()[i] << std::endl;
 	std::cout << std::endl;
+	delete cat;
+	delete cat1;
+	delete cat2;
+	delete cat4;
+}
+
+void	copyConstructor(){
+	Dog *doggo = new Dog();
+	Dog cat3(*doggo);
+	std::cout << BOLDGREEN << "\nCOPIED IDEAS\n" << RESET << std::endl;
+	for (int i = 0; i < 100; i++)
+		std::cout << cat3.getType() << " " << cat3.getBrain()->getIdeas()[i] << std::endl;
+	delete doggo;
+}
+
+void	animalArray(){
 	const Animal *(animal_array[4]);
-	std::cout << RED << "\nANIMAL ARRAY\n" << RESET << std::endl;
 	for (int i = 0; i < 2; i++)
 		animal_array[i] = new Dog();
 	std::cout << std::endl;
@@ -31,8 +46,15 @@ int main(){
 	std::cout << std::endl;
 	for (int i = 0; i < 4; i++)
 		delete animal_array[i];
-	delete cat;
-	delete cat2;
-	std::cout << std::endl;
+}
+
+int main(){
+	std::cout << BOLDREDUNDERLINE << "\nASSIGNATION OPERATOR\n" << RESET << std::endl;
+	assignationOperator();
+	std::cout << BOLDREDUNDERLINE << "\nCOPY CONSTRUCTOR\n" << RESET << std::endl;
+	copyConstructor();
+	std::cout << BOLDREDUNDERLINE << "\nANIMAL ARRAY\n" << RESET << std::endl;
+	animalArray();
+	std::cout << BOLDREDUNDERLINE << "\nSUBJECT MAIN\n" << RESET << std::endl;
 	subjectMain();
 }

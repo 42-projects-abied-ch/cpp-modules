@@ -9,7 +9,7 @@ RM			= rm -rf
 SRCS_DIR	= src
 OBJS_DIR	= obj
 
-CXXFLAGS	= -Wall -Wextra -Werror -MP -MD -std=c++98 -g
+CXXFLAGS	= -Wall -Wextra -Werror -MP -MD -std=c++98 -g -Wshadow -Wno-shadow -pedantic
 
 SRCS    = \
 		$(SRCS_DIR)/Animal.cpp \

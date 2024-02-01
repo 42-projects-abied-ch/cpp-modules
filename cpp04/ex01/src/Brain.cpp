@@ -12,10 +12,9 @@ Brain::Brain(){
 }
 
 Brain::Brain(const Brain &other){
-	std::string *otherIdeas = other.ideas;
     this->ideas = new std::string[100];
     for (int i = 0; i < 100; i++)
-        this->ideas[i] = otherIdeas[i] + " (copy)";
+        this->ideas[i] = other.ideas[i] + " (copy)";
     std::cout << "Brain copy constructor called" << std::endl;
 }
 

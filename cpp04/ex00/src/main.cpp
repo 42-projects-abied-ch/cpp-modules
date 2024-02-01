@@ -23,8 +23,10 @@ void subjectMain(){
 int main(){
 	const Animal* animal = new Animal();
 	const Animal* dog = new Dog();
+	Dog doggo;
 	const Animal* cat = new Cat();
 	std::cout << std::endl;
+	doggo = *(Dog *)dog;
 	std::cout << "Dog->getType: " << dog->getType() << std::endl;
 	std::cout << "Cat->getType: " << cat->getType() << std::endl;
 	cat->makeSound();

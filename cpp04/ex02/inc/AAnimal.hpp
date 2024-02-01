@@ -1,9 +1,9 @@
 #pragma once
 
-#ifndef ANIMAL_HPP
-# define ANIMAL_HPP
-
 #include "Brain.hpp"
+#ifndef AANIMAL_HPP
+# define AANIMAL_HPP
+
 #include <iostream>
 
 class AAnimal{
@@ -13,11 +13,12 @@ public:
 	AAnimal();
 	AAnimal(const AAnimal &other);
 	virtual ~AAnimal();
-	AAnimal &operator=(const AAnimal &other);
+	virtual AAnimal &operator=(const AAnimal &other);
 	
 	virtual std::string	getType() const;
-	virtual void		makeSound() const;
+	virtual void 		makeSound() const;
 	virtual Brain		*getBrain() const = 0;
 };
+
 
 #endif

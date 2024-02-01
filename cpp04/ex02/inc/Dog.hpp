@@ -7,7 +7,7 @@
 #include "AAnimal.hpp"
 #include "Brain.hpp"
 
-class Dog : public AAnimal{
+class Dog : virtual public AAnimal{
 	private:
 		std::string	type;
 		Brain		*brain;
@@ -19,7 +19,7 @@ class Dog : public AAnimal{
 
 		void 				makeSound() const;
 		std::string			getType() const;
-		Brain		*getBrain() const;
+		Brain				*getBrain() const;
 };
 
 std::ostream	&operator<<(std::ostream &stream, const Dog &instance);

@@ -7,7 +7,7 @@
 #include <iostream>
 #include "AAnimal.hpp"
 
-class Cat : public AAnimal{
+class Cat : virtual public AAnimal{
 	private:
 		std::string	type;
 		Brain		*brain;
