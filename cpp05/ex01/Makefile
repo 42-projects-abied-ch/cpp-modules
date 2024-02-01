@@ -1,6 +1,6 @@
 CXX			= c++
 
-NAME		= Bureaucrat
+NAME		= Form
 
 RM			= rm -rf
 
