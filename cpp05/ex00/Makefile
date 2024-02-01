@@ -31,7 +31,7 @@ test	: re
 		@$(RM) $(OBJS_DIR) $(NAME)
 
 $(NAME)	: $(OBJS)
-		$(CXX) -o Animal $^
+		$(CXX) -o $(NAME) $^
 
 ${OBJS_DIR}/%.o: ${SRCS_DIR}/%.cpp
 		@mkdir -p $(dir $@)

@@ -8,11 +8,12 @@ SRCS_DIR	= src
 
 OBJS_DIR	= obj
 
-CXXFLAGS	= -Wall -Wextra -Werror -MP -MD -std=c++98
+CXXFLAGS	= -Wall -Wextra -Werror -MP -MD -std=c++98 -g
 
 SRCS    = \
 			${SRCS_DIR}/main.cpp \
 			${SRCS_DIR}/Bureaucrat.cpp \
+			${SRCS_DIR}/Form.cpp \
 
 OBJS	= $(SRCS:${SRCS_DIR}/%.cpp=${OBJS_DIR}/%.o)
 
@@ -31,7 +32,7 @@ test	: re
 		@$(RM) $(OBJS_DIR) $(NAME)
 
 $(NAME)	: $(OBJS)
-		$(CXX) -o Animal $^
+		$(CXX) -o $(NAME) $^
 
 ${OBJS_DIR}/%.o: ${SRCS_DIR}/%.cpp
 		@mkdir -p $(dir $@)
