@@ -15,6 +15,7 @@ SRCS    = \
 			${SRCS_DIR}/Bureaucrat.cpp \
 			${SRCS_DIR}/AForm.cpp \
 			${SRCS_DIR}/PresidentialPardonForm.cpp \
+			${SRCS_DIR}/ShrubberyCreationForm.cpp \
 
 OBJS	= $(SRCS:${SRCS_DIR}/%.cpp=${OBJS_DIR}/%.o)
 

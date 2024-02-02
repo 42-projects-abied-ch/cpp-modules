@@ -18,6 +18,9 @@ class ShrubberyCreationForm : virtual public AForm
         ~ShrubberyCreationForm();
 
         void    execute(const Bureaucrat &executor);
+
+        void                    doShrubbery();
+        const std::string       ASCIITREE(const std::string ID);
 };
 
 #endif

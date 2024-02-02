@@ -25,11 +25,36 @@ void	PPFTest()
 	PPF->execute(Arthur);
 	std::cout << std::endl;
 	unsignedPPF->execute(Arthur);
+	std::cout << std::endl;
 	delete PPF;
 	delete unsignedPPF;
 }
 
+void	SCFTest()
+{
+	ShrubberyCreationForm *SCF = new ShrubberyCreationForm("\?\?\?\?");
+	ShrubberyCreationForm *unsignedSCF = new ShrubberyCreationForm("Your Mum");
+	Bureaucrat Arthur("Arthur", 148);
+
+	std::cout << Arthur << std::endl;
+	unsignedSCF->execute(Arthur);
+	while (Arthur.getGrade() > SCF->executionRequirement())
+		Arthur.incrementGrade();
+	std::cout << "\n" << Arthur << std::endl;
+	Arthur.signForm(*SCF);
+	std::cout << std::endl;
+	SCF->execute(Arthur);
+	std::cout << std::endl;
+	unsignedSCF->execute(Arthur);
+	delete SCF;
+	delete unsignedSCF;
+}
+
 int main()
 {
+	std::cout << BOLDRED << "PRESIDENTIAL PARDON FORM\n" << std::endl;
 	PPFTest();
+	std::cout << BOLDRED << "SHRUBBERY CREATION FORM\n" << std::endl;
+	SCFTest();
+	std::cout << BOLDRED << "ROBOTOMY REQUEST FORM\n" << std::endl;
 }
