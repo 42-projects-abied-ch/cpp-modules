@@ -1,6 +1,7 @@
 #ifndef BUREAUCRAT_HPP
 # define BUREAUCRAT_HPP
 
+#include <string>
 # pragma once
 
 # include <exception>
@@ -15,12 +16,13 @@ class Bureaucrat
 
 		const std::string	_name;
 		int					_grade;
-
 		Bureaucrat();
+
 	public:
 
 		Bureaucrat(const std::string name, int grade);
 		Bureaucrat(const Bureaucrat &copy);
+		Bureaucrat	&operator = (const Bureaucrat &other);
 		~Bureaucrat();
 
 		int					getGrade() const;

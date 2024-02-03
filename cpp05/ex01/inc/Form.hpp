@@ -22,6 +22,7 @@ class Form
 
 		Form(const int requiredForSignature, const int requiredForExecution, const std::string name);
 		Form(const Form &other);
+		Form	&operator = (const Form &other);
 		~Form();
 
 		bool				isSigned() const;

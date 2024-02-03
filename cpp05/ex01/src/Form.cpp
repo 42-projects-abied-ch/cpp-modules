@@ -19,6 +19,15 @@ Form::Form(const Form &other) : _signed(other._signed), _requiredForSignature(ot
 
 }
 
+Form	&Form::operator = (const Form &other)
+{
+	if (this == &other)
+		return *this;
+	this->_signed = other.isSigned();
+	return *this;
+}
+
+
 Form::~Form()
 {
 

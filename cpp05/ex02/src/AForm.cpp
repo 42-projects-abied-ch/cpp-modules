@@ -15,6 +15,14 @@ AForm::AForm(const int sign, const int exec, const std::string name) : _signed(f
 
 }
 
+AForm	&AForm::operator = (const AForm &other)
+{
+	if (this == &other)
+		return *this;
+	this->_signed = other.isSigned();
+	return *this;
+}
+
 AForm::~AForm()
 {
 

@@ -22,6 +22,7 @@ class AForm
 		AForm();
 		AForm(const int requiredForSignature, const int requiredForExecution, const std::string name);
 		AForm(const AForm &other);
+		AForm	&operator = (const AForm &other);
 		virtual ~AForm();
 
 		bool						isSigned() const;

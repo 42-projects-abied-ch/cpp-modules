@@ -8,6 +8,19 @@ Intern::Intern()
 
 }
 
+Intern::Intern(const Intern &other)
+{
+    this->setFormName(other._formName);
+}
+
+Intern  &Intern::operator = (const Intern &other)
+{
+    if (this == &other)
+        return *this;
+    this->setFormName(other._formName);
+    return *this;
+}
+
 Intern::~Intern()
 {
 

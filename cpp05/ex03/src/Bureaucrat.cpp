@@ -20,6 +20,15 @@ Bureaucrat::Bureaucrat(const Bureaucrat &copy) : _name(copy._name), _grade(copy.
 
 }
 
+Bureaucrat	&Bureaucrat::operator = (const Bureaucrat &other)
+{
+	if (this == &other)
+		return *this;
+	this->_grade = other.getGrade();
+	return *this;
+}
+
+
 Bureaucrat::~Bureaucrat()
 {
 

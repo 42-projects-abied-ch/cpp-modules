@@ -8,6 +8,8 @@ void	tryIncrement(Bureaucrat &_Bureaucrat)
 	{
 		if (i % 10 == 0)
 			std::cout << _Bureaucrat;
+		if (_Bureaucrat.getGrade() == 1)
+			std::cout << std::endl;
 		_Bureaucrat.incrementGrade();
 	}
 	std::cout << std::endl;
@@ -20,6 +22,8 @@ void	tryDecrement(Bureaucrat &_Bureaucrat)
 	{
 		if (i % 10 == 9)
 			std::cout << _Bureaucrat;
+		if (_Bureaucrat.getGrade() == 150)
+			std::cout <<std::endl;
 		_Bureaucrat.decrementGrade();
 	}
 	std::cout << std::endl;
