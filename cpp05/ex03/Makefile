@@ -1,6 +1,6 @@
 CXX			= c++
 
-NAME		= AForm
+NAME		= Intern
 
 RM			= rm -rf
 

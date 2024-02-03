@@ -1,6 +1,7 @@
 #ifndef INTERN_HPP
 # define INTERN_HPP
 
+#include <exception>
 # pragma once
 
 # include "RobotomyRequestForm.hpp"
@@ -9,16 +10,22 @@
 
 class Intern
 {
-    public:
+	private:
 
-        Intern();
-        ~Intern();
+		std::string    _formName;
 
-        AForm   *makeForm(const std::string name, const std::string target);
+	public:
 
-        PresidentialPardonForm  *PPF(const std::string target);
-        RobotomyRequestForm     *RRF(const std::string target);
-        ShrubberyCreationForm   *SCF(const std::string target);
+		Intern();
+		~Intern();
+
+		AForm		*makeForm(const std::string name, const std::string target);
+
+		AForm		*PPF(const std::string target);
+		AForm		*RRF(const std::string target);
+		AForm		*SCF(const std::string target);
+
+		void		setFormName(const std::string name);               
 };
 
 #endif
