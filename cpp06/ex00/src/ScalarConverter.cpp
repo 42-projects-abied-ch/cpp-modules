@@ -50,7 +50,7 @@ void    ScalarConverter::setInput(const std::string input)
 
 bool    ScalarConverter::checkFloat(const size_t i)
 {
-	if (static_cast<char>(this->input[i] == 'f' && this->input.length() == i + 1 && std::isdigit(static_cast<char>(this->input[i - 1]))))
+	if (static_cast<char>(this->input[i]) == 'f' && this->input.length() == i + 1 && std::isdigit(static_cast<char>(this->input[i - 1])) == true)
 	{
 		this->dataType = FLOAT;
 		return true;
@@ -72,7 +72,7 @@ bool    ScalarConverter::checkValidDecimal(const int i)
 
 bool    ScalarConverter::checkChar()
 {
-	if (this->input.length() == 1 && std::isdigit(static_cast<char>(this->input[0])))
+	if (this->input.length() == 1 && std::isdigit(static_cast<char>(this->input[0])) == false)
 	{
 		this->dataType = CHAR;
 		return true;
@@ -113,20 +113,22 @@ void    ScalarConverter::setType()
 		return ;
 	else
 	{
-		for (size_t i = 0 + (static_cast<char>(input[0]) == '+' || static_cast<char>(input[0]) == '-'); i < this->input.length(); i++)
+		bool sign = (static_cast<char>(input[0]) == '+' || static_cast<char>(input[0]) == '-');
+
+		for (size_t i = 0 + sign; i < this->input.length(); i++)
 		{
 			if (this->checkFloat(i) == true)
 				return ;
 			else if (this->checkValidDecimal(i) == false)
 				return ;
-			else if (std::isdigit(static_cast<char>(this->input[i])))
+			else if (std::isdigit(static_cast<char>(this->input[i])) == false)
 				return ;
 		}
+		if (this->decimal == true)
+			this->dataType = DOUBLE;
+		else
+			this->dataType = INT;
 	}
-	if (this->decimal == true)
-		this->dataType = DOUBLE;
-	else
-		this->dataType = INT;
 }
 
 void    ScalarConverter::printChar() const
@@ -299,5 +301,6 @@ void    ScalarConverter::printConverted()
 	};
 	if (this->dataType == UNDEFINED)
 		this->setType();
+	std::cout << "this->dataType: " << this->dataType << std::endl;
 	(this->*(out[this->dataType]))();
 }
