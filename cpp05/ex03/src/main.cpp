@@ -18,7 +18,7 @@ int main(int argc, char **argv)
     }
     AForm*      form;
     Intern      someRandomIntern;
-    Bureaucrat  Arthur(argv[1], std::stoi(argv[2]));
+    Bureaucrat  Arthur(argv[1], std::atoi(argv[2]));
     form = someRandomIntern.makeForm(argv[3], argv[4]);
     if (form == NULL)
         return EXIT_FAILURE;

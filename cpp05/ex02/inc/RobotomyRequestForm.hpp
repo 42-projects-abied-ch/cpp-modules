@@ -1,9 +1,10 @@
 #ifndef ROBOTOMYREQUESTFORM_HPP
 # define ROBOTOMYREQUESTFORM_HPP
 
-#include <exception>
 # pragma once
 
+# include <exception>
+# include <cstdlib>
 # include "AForm.hpp"
 # include "Bureaucrat.hpp"
 

@@ -32,8 +32,8 @@ const std::string   ShrubberyCreationForm::ASCIITREE(const std::string ID) const
 
 void    ShrubberyCreationForm::doShrubbery() const
 {
-    std::string     fileName = this->_target + "_shrubbery";
-    std::ofstream   outputFile(fileName);
+    const std::string     	fileName = this->_target + "_shrubbery";
+    std::ofstream   		outputFile(fileName.c_str());
 
     if (outputFile.is_open())
     {
