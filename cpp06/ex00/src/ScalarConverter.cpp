@@ -121,7 +121,7 @@ void    ScalarConverter::setType()
 				return ;
 			else if (this->checkValidDecimal(i) == false)
 				return ;
-			else if (std::isdigit(static_cast<char>(this->input[i])) == false)
+			else if (this->input[i] != '.' && std::isdigit(static_cast<char>(this->input[i])) == false)
 				return ;
 		}
 		if (this->decimal == true)
@@ -194,15 +194,16 @@ void    ScalarConverter::printDouble() const
 	if (d < INT_MIN || d > INT_MAX)
 		std::cerr << "Int:\t[Could Not Convert]" << std::endl;
 	else
-		std::cout << static_cast<int>(d) << std::endl;
+		std::cout << "Int:\t[" << static_cast<int>(d) << "]" << std::endl;
 	std::cout << "Float:\t[" << static_cast<float>(d);
 	if (std::modf(d, &temp) == 0 && d < 999999.5)
 		std::cout << ".0f]" << std::endl;
 	else
-		std::cout << "f" << std::endl;
+		std::cout << "f]" << std::endl;
 	std::cout << "Double:\t[" << d;
 	if (std::modf(d, &temp) == 0 && d < 999999.5)
-		std::cout << ".0]";
+		std::cout << ".0";
+	std::cout << "]";
 	std::cout << std::endl;
 }
 
@@ -224,7 +225,7 @@ void    ScalarConverter::printFloat() const
 	if (f < INT_MIN || f > INT_MAX)
 		std::cerr << "Int:\t[Could Not Convert]" << std::endl;
 	else
-		std::cout << "Int:\t[" << static_cast<int>(f) << std::endl;
+		std::cout << "Int:\t[" << static_cast<int>(f) << "]" << std::endl;
 	std::cout << "FLoat:\t[" << f;
 	if (std::modf(f, &temp) == 0 && f < 999999.5)
 		std::cout << ".0f]" << std::endl;
@@ -232,8 +233,8 @@ void    ScalarConverter::printFloat() const
 		std::cout << "f]" << std::endl;
 	std::cout << "Double:\t[" << static_cast<double>(f);
 	if (std::modf(f, &temp) == 0 && f < 999999.5)
-		std::cout << ".0]";
-	std::cout << std::endl;
+		std::cout << ".0";
+	std::cout << "]" << std::endl;
 }
 
 void    ScalarConverter::printNotANumber() const
@@ -301,6 +302,5 @@ void    ScalarConverter::printConverted()
 	};
 	if (this->dataType == UNDEFINED)
 		this->setType();
-	std::cout << "this->dataType: " << this->dataType << std::endl;
 	(this->*(out[this->dataType]))();
 }
