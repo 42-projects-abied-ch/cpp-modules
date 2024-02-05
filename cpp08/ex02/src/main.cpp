@@ -1,5 +1,4 @@
 #include "../inc/MutantStack.hpp"
-#include <iostream>
 
 const char  *IteratorFailure::what() const throw()
 {
