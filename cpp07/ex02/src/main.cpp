@@ -10,9 +10,9 @@ int main()
     
     arrC[0] = "Hello World";
 
-    std::cout << "arrA:\t" << arrA << std::endl;
-    std::cout << "arrB:\t" << arrB << std::endl;
-    std::cout << "arrC:\t" << arrC << std::endl;
+    std::cout << "arrA:\n" << arrA << std::endl;
+    std::cout << "arrB:\n" << arrB << std::endl;
+    std::cout << "arrC:\n" << arrC << std::endl;
 
     arrC = arrB;
     arrB[2] = "dlroW olleH";

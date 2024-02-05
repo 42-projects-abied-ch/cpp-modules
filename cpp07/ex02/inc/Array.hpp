@@ -50,9 +50,6 @@ const char  *Array<T>::IndexOutOfBounds::what() const throw()
 }
 
 template <class T>
-std::ostream    &operator << (std::ostream &out, Array<T> &obj);
-
-template <class T>
 Array<T>::Array() : arr(new T[0]), arrSize(0)
 {
     
