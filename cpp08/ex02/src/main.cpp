@@ -36,7 +36,7 @@ void testIterator()
         expectedValue++;
     }
 
-    MutantStack<int> emptyStack;
+    MutantStack <int> emptyStack;
     stack = emptyStack;
     if (stack.begin() != stack.end())
         throw IteratorFailure();
