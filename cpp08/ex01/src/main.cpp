@@ -1,5 +1,17 @@
 #include "../inc/Span.hpp"
 
+void	subjectMain()
+{
+	Span sp = Span(5);
+	sp.addNumber(6);
+	sp.addNumber(3);
+	sp.addNumber(17);
+	sp.addNumber(9);
+	sp.addNumber(11);
+	std::cout << sp.shortestSpan() << std::endl;
+	std::cout << sp.longestSpan() << std::endl;
+}
+
 void	trySmall()
 {
 	Span small(10);
@@ -20,7 +32,7 @@ void	trySmall()
 		}
 	}
 	std::cout << "small.shortestSpan():\t[" << small.shortestSpan() << "]" << std::endl;
-	std::cout << "small.longestSpan():\t[" << small.longestSpan() << "]" << std::endl;
+	std::cout << "small.longestSpan():\t[" << small.longestSpan() << "]\n" << std::endl;
 }
 
 void	tryHuge()
@@ -43,11 +55,12 @@ void	tryHuge()
 		}
 	}
 	std::cout << "huge.shortestSpan():\t[" << huge.shortestSpan() << "]" << std::endl;
-	std::cout << "huge.longestSpan():\t[" << huge.longestSpan() << "]" << std::endl;
+	std::cout << "huge.longestSpan():\t[" << huge.longestSpan() << "]\n" << std::endl;
 }
 
 int main()
 {
 	trySmall();
 	tryHuge();
+	subjectMain();
 }

@@ -19,11 +19,11 @@ class Span
 		std::vector <int>		storage;
 
 		Span();
-		Span(const Span &other);
 
 	public:
 
 		Span(size_t _N);
+		Span(const Span &other);
 		~Span();
 
 		Span	&operator = (const Span &other);
