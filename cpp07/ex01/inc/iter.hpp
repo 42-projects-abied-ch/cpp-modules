@@ -6,6 +6,13 @@
 # include <iostream>
 
 template <typename T>
+void    iter(T *arr, size_t arrLen, void(*f)(T &thing))
+{
+    for (size_t i = 0; i < arrLen; i++)
+        f(arr[i]);
+}
+
+template <typename T>
 void    iter(T *arr, size_t arrLen, void(*f)(const T &thing))
 {
     for (size_t i = 0; i < arrLen; i++)

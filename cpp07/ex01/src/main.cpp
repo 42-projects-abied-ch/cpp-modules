@@ -1,21 +1,33 @@
 #include "../inc/iter.hpp"
-#include <string>
 
-template <typename S>
-void    printThis(const S &thing)
+class Awesome
 {
-    std::cout << thing << std::endl;
+  public:
+    Awesome( void ) : _n( 42 ) { return; }
+    int get( void ) const { return this->_n; }
+  private:
+    int _n;
+};
+
+std::ostream & operator<<( std::ostream & o, Awesome const & rhs )
+{
+  o << rhs.get();
+  return o;
 }
 
-int main()
+template< typename T >
+void print( T& x )
 {
-    std::string arr[3] =
-    {
-        "This",
-        "Is",
-        "Fun"
-    };
-    const int   tab[4] = { 1, 2, 3, 4 };
-    iter(tab, 4, printThis);
-    iter(arr, arr->length(), printThis);
+  std::cout << x << std::endl;
+  return;
+}
+
+int main() {
+  int tab[] = { 0, 1, 2, 3, 4 };
+  Awesome tab2[5];
+
+  iter( tab, 5, print<const int> );
+  iter( tab2, 5, print<Awesome> );
+
+  return 0;
 }
