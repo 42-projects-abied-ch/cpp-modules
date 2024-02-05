@@ -28,7 +28,6 @@ int     RPN(std::string tokens)
             else if (tokens[i] == '*')
                 stk.push(num1 * num2);
             else if (tokens[i] == '/')
-                
                 stk.push(num1 / num2);
         } 
         else if (std::isdigit(tokens[i]) == true)
