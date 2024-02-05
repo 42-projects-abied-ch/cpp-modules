@@ -2,7 +2,7 @@
 #include <cctype>
 #include <cstdlib>
 
-bool    operand(char c)
+bool    isOperator(char c)
 {
     return c == '*' || c == '/' || c == '-' || c == '+';
 }
@@ -15,7 +15,7 @@ int     RPN(std::string tokens)
     {
         if (tokens[i] == ' ')
             continue ;
-        else if (operand(tokens[i]) == true)
+        else if (isOperator(tokens[i]) == true)
         {
             int num2 = stk.top();
             stk.pop();
@@ -35,7 +35,6 @@ int     RPN(std::string tokens)
         else
         {
             std::cerr << "Error" << std::endl;
-            return EXIT_FAILURE;
         }
     }
     return stk.top();
