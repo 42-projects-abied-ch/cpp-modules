@@ -16,6 +16,11 @@ class InvalidCharacter : public std::exception
     virtual const char *what() const throw();
 };
 
+class MultipleDigits : public std::exception
+{
+    virtual const char *what() const throw();
+};
+
 void    RPN(std::string tokens);
 bool    isOperator(char c);
 

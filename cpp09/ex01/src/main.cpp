@@ -11,7 +11,7 @@ int main(int argc, char **argv)
     }
     catch (std::exception &InvalidExpression)
     {
-        std::cerr << InvalidExpression.what() << std::endl;
+        std::cout << "Error" << std::endl;
         return EXIT_FAILURE;
     }
 }

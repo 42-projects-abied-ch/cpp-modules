@@ -12,6 +12,11 @@ const char  *InvalidExpression::what() const throw()
     return "Invalid Expression";
 }
 
+const char  *MultipleDigits::what() const throw()
+{
+    return "Multiple Digits Number Found";
+}
+
 void    checkTokens(std::string tokens)
 {
     int numCount = 0;
@@ -20,6 +25,8 @@ void    checkTokens(std::string tokens)
 
     for (int i = 0; i < n; i++)
     {
+        if (std::isdigit(tokens[i]) == true && std::isdigit(tokens[i + 1]) == true)
+            throw MultipleDigits();
         if (std::isdigit(tokens[i]) == true)
             numCount++;
         else if (isOperator(tokens[i]) == true)
