@@ -5,5 +5,4 @@ int main()
 	BTCExchange btc;
 
 	btc.setDataBase();
-	btc.printDataBase();
 }

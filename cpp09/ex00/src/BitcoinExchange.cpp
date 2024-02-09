@@ -1,4 +1,7 @@
 #include "../inc/BitcoinExchange.hpp"
+#include <cctype>
+#include <cstdlib>
+#include <exception>
 #include <sstream>
 
 BTCExchange::BTCExchange()
@@ -32,18 +35,41 @@ void	BTCExchange::setDataBase()
 		std::string line;
 
 		while ((bool)std::getline(dataBaseFile, line) == true)
-			processLine(line);
+			processLineDB(line);
 	}
 	else
 		throw BTCExchangeException("could not open database");
 }
 
-void	BTCExchange::processLine(const std::string &line)
+void	BTCExchange::checkLineDB(const std::string &line)
 {
 	if (line == "date,exchange_rate")
 		return ;
-	else
+	if (line.size() < 10 || line[4] != '-' || line[7] != '-')
+		throw BTCExchangeException(line + " is invalid");
+	for (size_t i = 0; i < 10; i++)
 	{
+		if (i == 4 || i == 7)
+			continue ;
+		if (std::isdigit(line[i]) == false)
+			break ;
+	}
+	if (line.size() < 11 || line[10] != ',')
+		throw BTCExchangeException(line + " is invalid");
+	std::string sRate = line.substr(11);
+	char	*end;
+	std::strtod(sRate.c_str(), &end);
+	if (end == sRate.c_str() || *end != '\0')
+		throw BTCExchangeException(line + " is invalid");
+}
+
+void	BTCExchange::processLineDB(const std::string &line)
+{
+	try
+	{
+		if (line == "date,exchange_rate")
+			return ;
+		checkLineDB(line);
 		std::istringstream stringStream(line);
 		std::string date;
 		std::string sRate;
@@ -51,6 +77,10 @@ void	BTCExchange::processLine(const std::string &line)
 		std::getline(stringStream, sRate, ',');
 		float fRate = std::atof(sRate.c_str());
 		this->dataBase[date] = fRate;
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
 	}
 }
 

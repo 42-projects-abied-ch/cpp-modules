@@ -10,7 +10,6 @@
 # include <exception>
 # include <string>
 
-
 class BTCExchange
 {
 	private:
@@ -25,14 +24,17 @@ class BTCExchange
 		~BTCExchange();
 		BTCExchange	&operator = (const BTCExchange &other);
 
-		void	verifyInput(const std::string input);
+		void			verifyInput(const std::string input);
 		
-		void	setDataBase();
+		void			setDataBase();
 
-		void	processLine(const std::string &line);
-		void	checkLineValidity(const std::string &line);
+		void			checkLineDB(const std::string &line);
+		void			processLineDB(const std::string &line);
 
-		void	printDataBase();
+		void			checkLineInput(const std::string &line);
+		void			processLineInput(const std::string &line);
+
+		void			printDataBase();
 
 		class BTCExchangeException : public std::exception
 		{
