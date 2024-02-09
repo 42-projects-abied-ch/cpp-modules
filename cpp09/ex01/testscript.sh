@@ -21,10 +21,11 @@ do
         printf "Output: ❌ |"
     fi
     if [ "$exit_code" == "$expected_exit_code" ]; then
-        printf "Exit code: ✅\n"
+        printf "Exit code: ✅\n\n"
     else
-        printf "Exit code: ❌\n"
+        printf "Exit code: ❌\n\n"
     fi
+	sleep 0.1
 done < testcases.txt
 
 

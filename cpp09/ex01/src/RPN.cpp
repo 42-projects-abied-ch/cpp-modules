@@ -27,12 +27,12 @@ void    checkTokens(std::string tokens)
     {
         if (std::isdigit(tokens[i]) == true && std::isdigit(tokens[i + 1]) == true)
             throw MultipleDigits();
-        if (std::isdigit(tokens[i]) == true)
+		if (std::isdigit(tokens[i]) != false)
             numCount++;
-        else if (isOperator(tokens[i]) == true)
+		else if (isOperator(tokens[i]) == true)
             opCount++;
-        else if (tokens[i] != ' ')
-            throw InvalidCharacter();
+		else if (tokens[i] != ' ')
+			throw InvalidCharacter();
     }
     if (numCount - opCount != 1)
         throw InvalidExpression();
