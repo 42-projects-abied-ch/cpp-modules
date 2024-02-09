@@ -86,7 +86,7 @@ std::string	BTCExchange::checkDate(const std::string &line)
 		throw BTCExchangeException("[" + date + "]: invalid date format (YYYY-MM-DD)");
 	if (date > this->todayDate || std::atoi(date.substr(0, date.find('-')).c_str()) > 9999)
 		throw BTCExchangeException("[" + date + "]: date is in the future");
-	else if (date < this->dataBase.begin()->first)
+	if (date < this->dataBase.begin()->first)
 		throw BTCExchangeException("[" + date + "]: date is earlier than first one in database");
 	return date;
 }
@@ -104,9 +104,9 @@ void	BTCExchange::processLineInput(const std::string &line)
 {
 	try
 	{
+		std::string date = checkDate(line);
 		checkConstants(line);
 		checkFloat(line);
-		std::string date = checkDate(line);
 		printResult(line.substr(0, 10), std::atof(line.substr(13).c_str()));
 	}
 	catch (const std::exception &e)
