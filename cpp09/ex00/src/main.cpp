@@ -1,8 +1,33 @@
 #include "../inc/BitcoinExchange.hpp"
+#include <cstdlib>
+#include <exception>
 
-int main()
+void	checkArgumentCount(int argc)
 {
-	BTCExchange btc;
+	try
+	{
+		if (argc != 2)
+			throw BTCExchange::BTCExchangeException("execution: ./btc input.csv");
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+		exit(EXIT_FAILURE);
+	}
+}
 
-	btc.setDataBase();
+int main(int argc, char **argv)
+{
+	checkArgumentCount(argc);
+	BTCExchange btc(argv[1]);
+	try
+	{
+		btc.setDataBase();
+		btc.executeInput();
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
+		exit(EXIT_FAILURE);
+	}
 }

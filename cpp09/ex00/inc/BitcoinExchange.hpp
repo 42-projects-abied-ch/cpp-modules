@@ -10,17 +10,25 @@
 # include <exception>
 # include <string>
 
+typedef enum e_validLine
+{
+	INVALID,
+	VALID
+}	t_validLine;
+
 class BTCExchange
 {
 	private:
 
 		std::map <std::string, float> 	dataBase;
+		const std::string				inputFile;
 
 		BTCExchange(const BTCExchange &other);
+		BTCExchange();
 
 	public:
 
-		BTCExchange();
+		BTCExchange(const std::string &fileName);
 		~BTCExchange();
 		BTCExchange	&operator = (const BTCExchange &other);
 
@@ -28,11 +36,15 @@ class BTCExchange
 		
 		void			setDataBase();
 
+		void			executeInput();
+
 		void			checkLineDB(const std::string &line);
 		void			processLineDB(const std::string &line);
 
 		void			checkLineInput(const std::string &line);
 		void			processLineInput(const std::string &line);
+		void			checkConstants(const std::string &line);
+		void	 		checkFloat(const std::string &line);
 
 		void			printDataBase();
 
