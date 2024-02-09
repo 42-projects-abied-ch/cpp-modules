@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <exception>
 
-void	checkArgumentCount(int argc)
+int	checkArgumentCount(int argc)
 {
 	try
 	{
@@ -12,13 +12,15 @@ void	checkArgumentCount(int argc)
 	catch (const std::exception &e)
 	{
 		std::cerr << e.what() << std::endl;
-		exit(EXIT_FAILURE);
+		return EXIT_FAILURE;
 	}
+	return EXIT_SUCCESS;
 }
 
 int main(int argc, char **argv)
 {
-	checkArgumentCount(argc);
+	if (checkArgumentCount(argc) == EXIT_FAILURE)
+		return EXIT_FAILURE;
 	BTCExchange btc(argv[1]);
 	try
 	{
@@ -28,6 +30,7 @@ int main(int argc, char **argv)
 	catch (const std::exception &e)
 	{
 		std::cerr << e.what() << std::endl;
-		exit(EXIT_FAILURE);
+		return EXIT_FAILURE;
 	}
+	return EXIT_SUCCESS;
 }

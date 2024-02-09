@@ -9,6 +9,12 @@
 # include <fstream>
 # include <exception>
 # include <string>
+# include <cctype>
+# include <cstdlib>
+# include <ctime>
+# include <exception>
+# include <fstream>
+# include <sstream>
 
 typedef enum e_validLine
 {
@@ -21,6 +27,7 @@ class BTCExchange
 	private:
 
 		std::map <std::string, float> 	dataBase;
+		const std::string				todayDate;
 		const std::string				inputFile;
 
 		BTCExchange(const BTCExchange &other);
@@ -45,6 +52,10 @@ class BTCExchange
 		void			processLineInput(const std::string &line);
 		void			checkConstants(const std::string &line);
 		void	 		checkFloat(const std::string &line);
+		std::string		checkDate(const std::string &line);
+		void			printResult(const std::string &date, float n);
+
+		std::string		getTodayDate();
 
 		void			printDataBase();
 
