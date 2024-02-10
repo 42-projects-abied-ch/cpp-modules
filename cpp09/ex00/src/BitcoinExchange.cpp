@@ -1,17 +1,16 @@
 #include "../inc/BitcoinExchange.hpp"
-#include <cctype>
 
 BTCExchange::BTCExchange()
 {
 
 }
 
-BTCExchange::BTCExchange(const BTCExchange &other) : dataBase(other.dataBase)
+BTCExchange::BTCExchange(const BTCExchange &other) : dataBase(other.dataBase), todayDate(other.todayDate), inputFileName(other.inputFileName)
 {
 
 }
 
-BTCExchange::BTCExchange(const std::string &fileName) : todayDate(this->getTodayDate()), inputFile(fileName)
+BTCExchange::BTCExchange(const std::string &fileName) : todayDate(getTodayDate()), inputFileName(fileName)
 {
 
 }
@@ -25,89 +24,133 @@ BTCExchange	&BTCExchange::operator = (const BTCExchange &other)
 {
 	if (this == &other)
 		return *this;
-	this->dataBase = other.dataBase;
+	dataBase = other.dataBase;
 	return *this;
 }
 
 std::string	BTCExchange::getTodayDate()
 {
+	char		date[11];
 	std::time_t	t = std::time(0);
 	std::tm		*now = std::localtime(&t);
-	char	buf[11];
-	std::strftime(buf, sizeof(buf), "%Y-%m-%d", now);
-	return std::string(buf);
+
+	std::strftime(date, sizeof(date), "%Y-%m-%d", now);
+	return std::string(date);
 }
 
-void	BTCExchange::checkConstants(const std::string &line)
+void	BTCExchange::verifyConstants(const std::string &line) const
 {
-	if (line.size() < 14 || line[4] != '-' || line[7] != '-')
-		throw BTCExchangeException("[" + line + "]: is not a valid input format");
-	if (line[10] != ' ' || line[11] != '|' || line[12] != ' ')
-		throw BTCExchangeException("[" + line + "]: is not a valid input format");
+	if (line.size() < MIN_SIZE_INPUT || line[MINUS_POS1] != '-' || line[MINUS_POS2] != '-')
+		throw BTCExchangeException(formatError(line, INVALID_FORMAT));
+	if (line[SPACE_POS1] != ' ' || line[PIPE_POS] != '|' || line[SPACE_POS2] != ' ')
+		throw BTCExchangeException(formatError(line, INVALID_FORMAT));
 }
 
-void BTCExchange::checkFloat(const std::string &line)
+void	BTCExchange::verifyNumberSize(const std::string &line) const
 {
-	size_t n = line.size();
+	if (line[INPUT_VAL_POS] == '-')
+	{
+		if (std::stof(line.substr(INPUT_VAL_POS + 1)) == 0)
+			return ;
+		throw BTCExchangeException(formatError(line.substr(INPUT_VAL_POS), NUM_NEGATIVE));
+	}
+	else if (std::atof(line.substr(INPUT_VAL_POS).c_str()) > 1000)
+		throw BTCExchangeException(formatError(line.substr(INPUT_VAL_POS), NUM_TOO_HIGH));
+}
+
+void BTCExchange::verifyNumber(const std::string &line) const
+{
 	bool	decimal = false;
 	bool	digit = false;
-	
-	if (line[13] == '-')
-	{
-		if (std::atof(line.substr(14).c_str()) == 0)
-			return ;
-		throw BTCExchangeException("[" + line.substr(13) + "]: negative numbers are not supported");
-	}
-	else if (std::atof(line.substr(13).c_str()) > 1000)
-		throw BTCExchangeException("[" + line.substr(13) + "]: number too high (max 1000)");
-	for (size_t i = 13; i < n; i++)
+	size_t 	n = line.size();
+
+	verifyNumberSize(line);
+	for (size_t i = INPUT_VAL_POS; i < n; i++)
 	{
 		if (std::isdigit(line[i]) != false)
 			digit = true;
 		if (line[i] == '.')
 		{
 			if (decimal == true)
-				throw BTCExchangeException("[" + line.substr(13) + "]: is not a valid number");
+				throw BTCExchangeException(formatError(line.substr(INPUT_VAL_POS), NUM_INVALID));
+
 			else
 				decimal = true;
 		}
 		else if (std::isdigit(line[i]) == false)
-			throw BTCExchangeException("[" + line.substr(13) + "]: is not a valid number");
+			throw BTCExchangeException(formatError(line.substr(INPUT_VAL_POS), NUM_INVALID));
 	}
 	if (digit == false)
-		throw BTCExchangeException("[" + line.substr(13) + "]: is not a valid number");
+		throw BTCExchangeException(formatError(line.substr(INPUT_VAL_POS), NUM_INVALID));
 }
 
-std::string	BTCExchange::checkDate(const std::string &line)
+bool	BTCExchange::isLeapYear(int year) const
+{
+	if (year % 4 != 0)
+		return false;
+	else if (year % 100 != 0)
+		return true;
+	else if (year % 400 != 0)
+		return false;
+	else
+		return true;
+}
+
+void	BTCExchange::dateOverflow(const std::string &date) const
+{
+	int thirtyDays[] = {APRIL, JUNE, SEPTEMBER, NOVEMBER};
+	int year = std::stoi(date.substr(0, MINUS_POS1));
+	int month = std::stoi(date.substr(MINUS_POS1 + 1, MINUS_POS2));
+	int day = std::stoi(date.substr(8));
+	if (month > 12)
+		throw BTCExchangeException(formatError(month, MONTH_NOT_VALID));
+	else if (day > 31)
+		throw BTCExchangeException(formatError(day, DAY_NOT_VALID));
+	else if (month == 2 && day > 28 + isLeapYear(year))
+		throw BTCExchangeException(formatError(day, DAY_NOT_VALID));
+	else if (day > 30 && std::find(std::begin(thirtyDays), std::end(thirtyDays), month) != std::end(thirtyDays))
+		throw BTCExchangeException(formatError(day, DAY_NOT_VALID));
+
+}
+
+std::string	BTCExchange::verifyDate(const std::string &line) const
 {
 	std::string date = line.substr(0, line.find(' '));
 
+	for (size_t i = 0; i < date.size(); i++)
+	{
+		if (date[i] == '-')
+			continue ;
+		if (std::isdigit(date[i]) == 0)
+			throw BTCExchangeException(formatError(date, DATE_INVALID_CHAR));
+	}
 	if (std::atoi(date.substr(0, date.find('-')).c_str()) < 1000)
-		throw BTCExchangeException("[" + date + "]: invalid date format (YYYY-MM-DD)");
-	if (date > this->todayDate || std::atoi(date.substr(0, date.find('-')).c_str()) > 9999)
-		throw BTCExchangeException("[" + date + "]: date is in the future");
-	if (date < this->dataBase.begin()->first)
-		throw BTCExchangeException("[" + date + "]: date is earlier than first one in database");
+		throw BTCExchangeException(formatError(date, DATE_FORMAT_INVALID));
+	if (date > todayDate || std::atoi(date.substr(0, date.find('-')).c_str()) > 9999)
+		throw BTCExchangeException(formatError(date, DATE_IN_FUTURE));
+	if (date < dataBase.begin()->first)
+		throw BTCExchangeException(formatError(date, DATE_TOO_EARLY));
+	dateOverflow(date);
 	return date;
 }
 
 void	BTCExchange::printResult(const std::string &date, float n)
 {
-	std::map<std::string, float>::iterator it = this->dataBase.upper_bound(date);
+	std::map<std::string, float>::iterator it = dataBase.upper_bound(date);
 	--it;
 	if (n == -0)
 		n = 0;
 	std::cout << date << " => " << n << " = " << n * it->second << std::endl;
 }
 
-void	BTCExchange::processLineInput(const std::string &line)
+void	BTCExchange::processLine_Input(const std::string &line)
 {
 	try
 	{
-		std::string date = checkDate(line);
-		checkConstants(line);
-		checkFloat(line);
-		printResult(line.substr(0, 10), std::atof(line.substr(13).c_str()));
+		std::string date = verifyDate(line);
+		verifyConstants(line);
+		verifyNumber(line);
+		printResult(date, std::stof(line.substr(INPUT_VAL_POS)));
 	}
 	catch (const std::exception &e)
 	{
@@ -117,63 +160,63 @@ void	BTCExchange::processLineInput(const std::string &line)
 
 void	BTCExchange::executeInput()
 {
-	std::ifstream inputFile(this->inputFile.c_str());
+	std::ifstream inputFile(inputFileName.c_str());
 	if (inputFile.is_open() == true)
 	{
 		std::string line;
 
 		std::getline(inputFile, line);
-		if (line != "date | value")
-			throw BTCExchangeException("input file header is invalid");
-		while ((bool)std::getline(inputFile, line) == true)
-			processLineInput(line);
+		if (line != INPUT_EXPECTED_HEADER)
+			throw BTCExchangeException(INPUT_INVALID_HEADER);
+		while (std::getline(inputFile, line))
+			processLine_Input(line);
 	}
 	else
-		throw BTCExchangeException("could not open input file");
+		throw BTCExchangeException(INPUT_FILE_OPEN);
 }
 
 void	BTCExchange::setDataBase()
 {
-	std::ifstream dataBaseFile("database/data.csv");
+	std::ifstream dataBaseFile(DATABASE);
 	if (dataBaseFile.is_open() == true)
 	{
 		std::string line;
 
 		std::getline(dataBaseFile, line);
-		if (line != "date,exchange_rate")
-			throw BTCExchangeException("database header is invalid");
-		while ((bool)std::getline(dataBaseFile, line) == true)
-			processLineDB(line);
+		if (line != DB_EXPECTED_HEADER)
+			throw BTCExchangeException(DB_INVALID_HEADER);
+		while (std::getline(dataBaseFile, line))
+			processLine_DB(line);
 		if (this->dataBase.empty() == true)
-			throw BTCExchangeException("database is empty");
+			throw BTCExchangeException(DB_EMPTY);
 	}
 	else
-		throw BTCExchangeException("could not open database");
+		throw BTCExchangeException(DB_FILE_OPEN);
 }
 
-void	BTCExchange::checkLineDB(const std::string &line)
+void	BTCExchange::verifyLine_DB(const std::string &line) const
 {
-	if (line.size() < 10 || line[4] != '-' || line[7] != '-')
+	if (line.size() < MIN_SIZE_DB || line[MINUS_POS1] != '-' || line[MINUS_POS2] != '-')
 		throw BTCExchangeException(line + " is invalid");
 	for (size_t i = 0; i < 10; i++)
 	{
-		if (i == 4 || i == 7)
+		if (i == MINUS_POS1 || i == MINUS_POS2)
 			continue ;
 		if (std::isdigit(line[i]) == false)
 			break ;
 	}
-	if (line.size() < 11 || line[10] != ',')
+	if (line[COMMA_POS] != ',')
 		throw BTCExchangeException(line + " is invalid");
-	std::string sRate = line.substr(11);
+	std::string sRate = line.substr(DB_VAL_POS);
 	char	*end;
 	std::strtod(sRate.c_str(), &end);
 	if (end == sRate.c_str() || *end != '\0')
 		throw BTCExchangeException(line + " is invalid");
 }
 
-void	BTCExchange::processLineDB(const std::string &line)
+void	BTCExchange::processLine_DB(const std::string &line)
 {
-	checkLineDB(line);
+	verifyLine_DB(line);
 	std::istringstream stringStream(line);
 	std::string date;
 	std::string sRate;

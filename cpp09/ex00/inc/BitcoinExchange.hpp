@@ -3,24 +3,9 @@
 
 # pragma once
 
-# include <algorithm>
-# include <iostream>
-# include <map>
-# include <fstream>
-# include <exception>
-# include <string>
-# include <cctype>
-# include <cstdlib>
-# include <ctime>
-# include <exception>
-# include <fstream>
-# include <sstream>
 
-typedef enum e_validLine
-{
-	INVALID,
-	VALID
-}	t_validLine;
+# include "Defines.h"
+# include "Headers.h"
 
 class BTCExchange
 {
@@ -28,7 +13,7 @@ class BTCExchange
 
 		std::map <std::string, float> 	dataBase;
 		const std::string				todayDate;
-		const std::string				inputFile;
+		const std::string				inputFileName;
 
 		BTCExchange(const BTCExchange &other);
 		BTCExchange();
@@ -39,21 +24,25 @@ class BTCExchange
 		~BTCExchange();
 		BTCExchange	&operator = (const BTCExchange &other);
 
-		void			verifyInput(const std::string input);
-		
 		void			setDataBase();
 
 		void			executeInput();
 
-		void			checkLineDB(const std::string &line);
-		void			processLineDB(const std::string &line);
+		void			verifyLine_DB(const std::string &line) const;
+		void			processLine_DB(const std::string &line);
 
-		void			checkLineInput(const std::string &line);
-		void			processLineInput(const std::string &line);
-		void			checkConstants(const std::string &line);
-		void	 		checkFloat(const std::string &line);
-		std::string		checkDate(const std::string &line);
+		void			verifyConstants(const std::string &line) const;
+
+		void			verifyLine_Input(const std::string &line) const;
+		void			processLine_Input(const std::string &line);
+		
+		void	 		verifyNumber(const std::string &line) const;
+		void			verifyNumberSize(const std::string &line) const;
+
+		std::string		verifyDate(const std::string &line) const;
 		void			printResult(const std::string &date, float n);
+		void			dateOverflow(const std::string &date) const;
+		bool			isLeapYear(int year) const;
 
 		std::string		getTodayDate();
 
@@ -72,5 +61,15 @@ class BTCExchange
 				virtual const char	*what() const throw();
 		};
 };
+
+template <typename T>
+std::string	formatError(T errorValue, const std::string errorMessage)
+{
+	std::ostringstream oss;
+	oss << errorValue;
+	return "[" + oss.str() + "]: " + errorMessage;
+}
+
+
 
 #endif
