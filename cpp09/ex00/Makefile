@@ -18,8 +18,6 @@ OBJS	= $(SRCS:${SRCS_DIR}/%.cpp=${OBJS_DIR}/%.o)
 
 DEPS	= $(OBJS:%.o=%.d)
 
-	
-
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
 
@@ -35,7 +33,7 @@ run		: re
 
 fclean	: clean
 		$(RM) $(NAME)
-		rm -rf $(OBJS_DIR)
+		$(RM) $(OBJS_DIR)
 
 clean:
 	$(RM) $(OBJS)
