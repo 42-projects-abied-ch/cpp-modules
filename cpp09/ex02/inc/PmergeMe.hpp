@@ -1,6 +1,7 @@
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
+#include <cstddef>
 # pragma once
 
 # include <string>
@@ -20,8 +21,9 @@ class PmergeMe
 {
 	private:
 
-		std::vector <int> V_mergeMe;
-		std::deque	<int> D_mergeMe;
+		size_t				v_Comparisons;
+		std::vector <int> 	v_MergeMe;
+		std::deque	<int> 	D_mergeMe;
 
 		PmergeMe(const PmergeMe &other);
 
@@ -32,10 +34,10 @@ class PmergeMe
 
 		PmergeMe	&operator = (const PmergeMe &other);
 
-		void								vector_Init(int argc, char **argv);
-		void								vector_Sort(int argc, char **argv);
-		std::vector <std::pair <int, int>>	vector_MakePairs();
-
+		void								v_Init(int argc, char **argv);
+		void								v_Sort(int argc, char **argv);
+		std::vector <std::pair <int, int> >	v_MakePairs(std::vector <int> v);
+		std::vector <int>					v_SortLarger(std::vector <std::pair <int, int> > &pairs);
 
 		class Exception : public std::exception
 		{

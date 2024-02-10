@@ -14,4 +14,5 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 	PmergeMe _mergeMeBaby;
+	_mergeMeBaby.v_Sort(argc, argv);
 }

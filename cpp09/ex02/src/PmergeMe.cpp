@@ -1,15 +1,15 @@
 #include "../inc/PmergeMe.hpp"
 #include <cstddef>
 #include <deque>
-#include <tuple>
+#include <utility>
 #include <vector>
 
-PmergeMe::PmergeMe()
+PmergeMe::PmergeMe() : v_Comparisons(0)
 {
 
 }
 
-PmergeMe::PmergeMe(const PmergeMe &other) : V_mergeMe(other.V_mergeMe), D_mergeMe(other.D_mergeMe)
+PmergeMe::PmergeMe(const PmergeMe &other) : v_MergeMe(other.v_MergeMe), D_mergeMe(other.D_mergeMe)
 {
 
 }
@@ -19,37 +19,58 @@ PmergeMe::~PmergeMe()
 
 }
 
-void	PmergeMe::vector_Init(int argc, char **argv)
+void	PmergeMe::v_Init(int argc, char **argv)
 {
 	for (int i = 0; i < argc; i++)
-		V_mergeMe.push_back(std::atoi(argv[i]));
+		v_MergeMe.push_back(std::atoi(argv[i]));
 }
 
-std::vector <std::pair <int, int>>	PmergeMe::vector_MakePairs()
+std::vector <std::pair <int, int> >	PmergeMe::v_MakePairs(std::vector <int> v)
 {
-	std::vector <std::pair <int, int>> v_Pairs;
-	size_t n = V_mergeMe.size();
+	std::vector <std::pair <int, int> > v_Pairs;
+	size_t n = v.size();
 
 	for (size_t i = 0; i < n; i += 2)
 	{
-		if (i + i < n)
-			v_Pairs.push_back({V_mergeMe[i], V_mergeMe[i + 1]});
+		if (i + 1 < n)
+			v_Pairs.push_back(std::make_pair(v[i], v[i + 1]));
 		else
-			v_Pairs.push_back({V_mergeMe[i], -1});
+			v_Pairs.push_back(std::make_pair(v[i], -1));
 	}
 	return v_Pairs;
 }
 
-void	PmergeMe::vector_Sort(int argc, char **argv)
+std::vector <int> PmergeMe::v_SortLarger(std::vector <std::pair <int, int> > &v_Pairs)
 {
-	vector_Init(argc, argv);
-	std::vector <std::pair <int, int>> v_Pairs = vector_MakePairs();
+	size_t n = v_Pairs.size();
+	if (n <= 1)
+	{
+		std::vector <int> v_Sorted;
+		for (size_t i = 0; i < n; i++)
+			v_Sorted.push_back(v_Pairs[i].first);
+		return v_Sorted;
+	}
+	std::vector <int> v_Larger;
+	for (size_t i = 0; i < n; i++)
+		v_Larger.push_back(v_Pairs[i].first);
+	std::vector <std::pair <int, int> > v_NewPairs = v_MakePairs(v_Larger);
+	return v_SortLarger(v_NewPairs);
+}
+
+void	PmergeMe::v_Sort(int argc, char **argv)
+{
+	v_Init(argc, argv);
+	std::vector <std::pair <int, int> > v_Pairs = v_MakePairs(v_MergeMe);
 	size_t n = v_Pairs.size();
 	for (size_t i = 0; i < n; i++)
 	{
+		v_Comparisons++;
 		if (v_Pairs[i].first < v_Pairs[i].second)
 			std::swap(v_Pairs[i].first, v_Pairs[i].second);
 	}
+	std::vector <int> v_Sorted = v_SortLarger(v_Pairs);
+	for (size_t i = 0; i < v_Sorted.size(); i++)
+		std::cout << v_Sorted[i] << " - ";
 }
 
 PmergeMe::Exception::Exception(const std::string &message) : message(message)
