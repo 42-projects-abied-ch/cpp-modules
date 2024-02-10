@@ -1,6 +1,8 @@
 #include "../inc/PmergeMe.hpp"
+#include <algorithm>
 #include <cstddef>
 #include <deque>
+#include <queue>
 #include <utility>
 #include <vector>
 
@@ -21,56 +23,117 @@ PmergeMe::~PmergeMe()
 
 void	PmergeMe::v_Init(int argc, char **argv)
 {
-	for (int i = 0; i < argc; i++)
+	for (int i = 1; i < argc; i++)
 		v_MergeMe.push_back(std::atoi(argv[i]));
-}
-
-std::vector <std::pair <int, int> >	PmergeMe::v_MakePairs(std::vector <int> v)
-{
-	std::vector <std::pair <int, int> > v_Pairs;
-	size_t n = v.size();
-
-	for (size_t i = 0; i < n; i += 2)
-	{
-		if (i + 1 < n)
-			v_Pairs.push_back(std::make_pair(v[i], v[i + 1]));
-		else
-			v_Pairs.push_back(std::make_pair(v[i], -1));
-	}
-	return v_Pairs;
 }
 
 std::vector <int> PmergeMe::v_SortLarger(std::vector <std::pair <int, int> > &v_Pairs)
 {
-	size_t n = v_Pairs.size();
-	if (n <= 1)
-	{
-		std::vector <int> v_Sorted;
-		for (size_t i = 0; i < n; i++)
-			v_Sorted.push_back(v_Pairs[i].first);
-		return v_Sorted;
-	}
 	std::vector <int> v_Larger;
-	for (size_t i = 0; i < n; i++)
+	for (size_t i = 0; i < v_Pairs.size(); i++)
 		v_Larger.push_back(v_Pairs[i].first);
-	std::vector <std::pair <int, int> > v_NewPairs = v_MakePairs(v_Larger);
-	return v_SortLarger(v_NewPairs);
+	std::sort(v_Larger.begin(), v_Larger.end());
+	if (v_Larger.size() > 1)
+	{
+		std::vector <std::pair <int, int> > v_NewPairs = v_MakePairs();
+		return v_SortLarger(v_NewPairs);
+	}
+	else
+		return v_Larger;
+}
+
+std::vector <int>	PmergeMe::v_SortSmaller(std::vector <std::pair <int, int> > &v_Pairs)
+{
+	std::vector <int> v_Smaller;
+	for (size_t i = 0; i < v_Pairs.size(); i++)
+		v_Smaller.push_back(v_Pairs[i].second);
+	std::sort(v_Smaller.begin(), v_Smaller.end());
+	if (v_Smaller.size() > 1)
+	{
+		std::vector <std::pair <int, int> > v_NewPairs = v_MakePairs();
+		return v_SortSmaller(v_NewPairs);
+	}
+	else
+		return v_Smaller;
+}
+
+std::vector <int>	PmergeMe::v_Merge(std::vector <int> v_1, std::vector <int> v_2)
+{
+	std::vector <int> v_Merged;
+	while (v_1.empty() == false && v_2.empty() == false)
+	{
+		if (v_1.front() < v_2.front())
+		{
+			v_Merged.push_back(v_1.front());
+			v_1.erase(v_1.begin());
+		}
+		else
+		{
+			v_Merged.push_back(v_2.front());
+			v_2.erase(v_2.begin());
+		}
+	}
+	while (v_1.empty() == false)
+	{
+		v_Merged.push_back(v_1.front());
+		v_1.erase(v_1.begin());
+	}
+	while (v_2.empty() == false)
+	{
+		v_Merged.push_back(v_2.front());
+		v_2.erase(v_2.begin());
+	}
+	return v_Merged;
+}
+
+void	PmergeMe::v_MergeSequences()
+{
+	std::vector <std::pair <int, int> > v_Pairs = v_MakePairs();
+	std::vector <int> v_SortedLarger = v_SortLarger(v_Pairs);
+	std::vector <int> v_SortedSmaller = v_SortSmaller(v_Pairs);
+	v_MergeMe = v_Merge(v_SortedLarger, v_SortedSmaller);
+}
+
+std::vector <std::pair <int, int> >	PmergeMe::v_MakePairs()
+{
+	std::vector <std::pair <int, int> > v_Pairs;
+	size_t n = v_MergeMe.size();
+	std::sort(v_MergeMe.begin(), v_MergeMe.end());
+	for (size_t i = 0; i < n; i += 2)
+	{
+		if (i + 1 < n)
+			v_Pairs.push_back(std::make_pair(v_MergeMe[i], v_MergeMe[i + 1]));
+		else
+			v_Pairs.push_back(std::make_pair(v_MergeMe[i], -1));
+	}
+	return v_Pairs;
 }
 
 void	PmergeMe::v_Sort(int argc, char **argv)
 {
 	v_Init(argc, argv);
-	std::vector <std::pair <int, int> > v_Pairs = v_MakePairs(v_MergeMe);
+	std::vector <std::pair <int, int> > v_Pairs = v_MakePairs();
+	v_MergeMe.clear();
 	size_t n = v_Pairs.size();
 	for (size_t i = 0; i < n; i++)
 	{
-		v_Comparisons++;
-		if (v_Pairs[i].first < v_Pairs[i].second)
-			std::swap(v_Pairs[i].first, v_Pairs[i].second);
+		std::pair <int, int> v_TempPair = v_Pairs[i];
+		if (v_TempPair.second != -1)
+			v_MergeMe.insert(std::upper_bound(v_MergeMe.begin(), v_MergeMe.end(), v_TempPair.second), v_TempPair.second);
+		v_MergeMe.insert(std::upper_bound(v_MergeMe.begin(), v_MergeMe.end(), v_TempPair.first), v_TempPair.first);
 	}
-	std::vector <int> v_Sorted = v_SortLarger(v_Pairs);
-	for (size_t i = 0; i < v_Sorted.size(); i++)
-		std::cout << v_Sorted[i] << " - ";
+	v_Print();
+}
+
+void	PmergeMe::v_Print()
+{
+	for (size_t i = 0; i < v_MergeMe.size(); i++)
+	{
+		std::cout << v_MergeMe[i];
+		if (i < v_MergeMe.size() - 1)
+			std::cout << " ";
+	}
+	std::cout << std::endl;
 }
 
 PmergeMe::Exception::Exception(const std::string &message) : message(message)

@@ -36,8 +36,12 @@ class PmergeMe
 
 		void								v_Init(int argc, char **argv);
 		void								v_Sort(int argc, char **argv);
-		std::vector <std::pair <int, int> >	v_MakePairs(std::vector <int> v);
-		std::vector <int>					v_SortLarger(std::vector <std::pair <int, int> > &pairs);
+		std::vector <std::pair <int, int> >	v_MakePairs();
+		std::vector <int>					v_SortLarger(std::vector <std::pair <int, int> > &v_Pairs);
+		std::vector <int>					v_SortSmaller(std::vector <std::pair <int, int> > &v_Pairs);
+		std::vector <int>					v_Merge(std::vector <int> v_1, std::vector <int> v_2);
+		void								v_MergeSequences();
+		void								v_Print();
 
 		class Exception : public std::exception
 		{
