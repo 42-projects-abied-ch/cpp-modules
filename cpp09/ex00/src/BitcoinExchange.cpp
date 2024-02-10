@@ -101,7 +101,7 @@ void	BTCExchange::dateOverflow(const std::string &date) const
 	int thirtyDays[] = {APRIL, JUNE, SEPTEMBER, NOVEMBER};
 	int year = std::stoi(date.substr(0, MINUS_POS1));
 	int month = std::stoi(date.substr(MINUS_POS1 + 1, MINUS_POS2));
-	int day = std::stoi(date.substr(8));
+	int day = std::stoi(date.substr(MINUS_POS2 + 1));
 	if (month > 12)
 		throw BTCExchangeException(formatError(month, MONTH_NOT_VALID));
 	else if (day > 31)
