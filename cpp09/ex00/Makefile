@@ -35,6 +35,7 @@ run		: re
 
 fclean	: clean
 		$(RM) $(NAME)
+		rm -rf $(OBJS_DIR)
 
 clean:
 	$(RM) $(OBJS)
