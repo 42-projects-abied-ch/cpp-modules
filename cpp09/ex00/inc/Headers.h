@@ -1,3 +1,6 @@
+#ifndef HEADERS_H
+# define HEADERS_H
+
 # include <algorithm>
 # include <iostream>
 # include <map>
@@ -10,3 +13,5 @@
 # include <exception>
 # include <fstream>
 # include <sstream>
+
+#endif

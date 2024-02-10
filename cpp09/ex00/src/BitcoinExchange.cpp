@@ -50,7 +50,7 @@ void	BTCExchange::verifyNumberSize(const std::string &line) const
 {
 	if (line[INPUT_VAL_POS] == '-')
 	{
-		if (std::stof(line.substr(INPUT_VAL_POS + 1)) == 0)
+		if (std::atof(line.substr(INPUT_VAL_POS + 1).c_str()) == 0)
 			return ;
 		throw BTCExchangeException(formatError(line.substr(INPUT_VAL_POS), NUM_NEGATIVE));
 	}
@@ -98,17 +98,17 @@ bool	BTCExchange::isLeapYear(int year) const
 
 void	BTCExchange::dateOverflow(const std::string &date) const
 {
-	int thirtyDays[] = {APRIL, JUNE, SEPTEMBER, NOVEMBER};
-	int year = std::stoi(date.substr(0, MINUS_POS1));
-	int month = std::stoi(date.substr(MINUS_POS1 + 1, MINUS_POS2));
-	int day = std::stoi(date.substr(MINUS_POS2 + 1));
+	int thirtyDays[] = { APRIL, JUNE, SEPTEMBER, NOVEMBER };
+	int year = std::atoi(date.substr(0, MINUS_POS1).c_str());
+	int month = std::atoi(date.substr(MINUS_POS1 + 1, MINUS_POS2).c_str());
+	int day = std::atoi(date.substr(MINUS_POS2 + 1).c_str());
 	if (month > 12)
 		throw BTCExchangeException(formatError(month, MONTH_NOT_VALID));
 	else if (day > 31)
 		throw BTCExchangeException(formatError(day, DAY_NOT_VALID));
 	else if (month == 2 && day > 28 + isLeapYear(year))
 		throw BTCExchangeException(formatError(day, DAY_NOT_VALID));
-	else if (day > 30 && std::find(std::begin(thirtyDays), std::end(thirtyDays), month) != std::end(thirtyDays))
+	else if (day > 30 && std::find(thirtyDays, thirtyDays + sizeof(thirtyDays) / sizeof(thirtyDays[0]), month))
 		throw BTCExchangeException(formatError(day, DAY_NOT_VALID));
 
 }
@@ -150,7 +150,7 @@ void	BTCExchange::processLine_Input(const std::string &line)
 		std::string date = verifyDate(line);
 		verifyConstants(line);
 		verifyNumber(line);
-		printResult(date, std::stof(line.substr(INPUT_VAL_POS)));
+		printResult(date, std::atof(line.substr(INPUT_VAL_POS).c_str()));
 	}
 	catch (const std::exception &e)
 	{
@@ -183,6 +183,8 @@ void	BTCExchange::setDataBase()
 		std::string line;
 
 		std::getline(dataBaseFile, line);
+		if (line.size() == 0)
+			throw BTCExchangeException(DB_NO_HEADER);
 		if (line != DB_EXPECTED_HEADER)
 			throw BTCExchangeException(DB_INVALID_HEADER);
 		while (std::getline(dataBaseFile, line))

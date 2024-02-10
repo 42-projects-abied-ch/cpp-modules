@@ -70,6 +70,4 @@ std::string	formatError(T errorValue, const std::string errorMessage)
 	return "[" + oss.str() + "]: " + errorMessage;
 }
 
-
-
 #endif

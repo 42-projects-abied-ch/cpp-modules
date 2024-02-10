@@ -1,8 +1,6 @@
 #ifndef CONSTANTS_H
 # define CONSTANTS_H
 
-
-//Input Constants
 # define MIN_SIZE_INPUT 14
 # define MIN_SIZE_DB 11
 # define COMMA_POS 10
@@ -17,12 +15,18 @@
 # define JUNE 6
 # define SEPTEMBER 9
 # define NOVEMBER 11
+
+# ifndef DATABASE
+#  define DATABASE "database/data.csv"
+# endif
+
+
 # define DB_EXPECTED_HEADER "date,exchange_rate"
 # define INPUT_EXPECTED_HEADER "date | value"
-# define DATABASE "database/data.csv"
 # define INPUT_INVALID_HEADER "input file header is invalid"
 # define INPUT_FILE_OPEN "could not open input file"
 # define DB_INVALID_HEADER "database header is invalid"
+# define DB_NO_HEADER "database header is missing"
 # define DB_EMPTY "database is empty"
 # define DB_FILE_OPEN "could not open database"
 # define DATE_IN_FUTURE "date is in the future"
