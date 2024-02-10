@@ -3,8 +3,16 @@
 
 # pragma once
 
+# include <exception>
 # include <stack>
 # include <iostream>
+# include <climits>
+# include <cstdlib>
+
+class InvalidInput : public std::exception
+{
+	virtual const char	*what() const throw();
+};
 
 class InvalidExpression : public std::exception
 {
@@ -19,6 +27,11 @@ class InvalidCharacter : public std::exception
 class MultipleDigits : public std::exception
 {
     virtual const char *what() const throw();
+};
+
+class IntegerOverflow : public std::exception
+{
+	virtual const char	*what() const throw();
 };
 
 void    RPN(std::string tokens);

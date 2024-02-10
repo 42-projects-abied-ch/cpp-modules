@@ -1,17 +1,16 @@
 #include "../inc/RPN.hpp"
-#include <cstdlib>
 
 int main(int argc, char **argv)
 {
-    if (argc != 2)
-        return 1;
     try
     {
+		if (argc != 2)
+			throw InvalidInput();
         RPN(argv[1]);
     }
-    catch (std::exception &InvalidExpression)
+    catch (std::exception &e)
     {
-        std::cout << "Error" << std::endl;
+        std::cout << "error: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 }
