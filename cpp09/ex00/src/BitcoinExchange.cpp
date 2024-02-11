@@ -170,6 +170,7 @@ void	BTCExchange::executeInput()
 			throw BTCExchangeException(INPUT_INVALID_HEADER);
 		while (std::getline(inputFile, line))
 			processLine_Input(line);
+		inputFile.close();
 	}
 	else
 		throw BTCExchangeException(INPUT_FILE_OPEN);
@@ -189,6 +190,7 @@ void	BTCExchange::setDataBase()
 			throw BTCExchangeException(DB_INVALID_HEADER);
 		while (std::getline(dataBaseFile, line))
 			processLine_DB(line);
+		dataBaseFile.close();
 		if (this->dataBase.empty() == true)
 			throw BTCExchangeException(DB_EMPTY);
 	}
