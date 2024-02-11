@@ -6,14 +6,14 @@
 #include <utility>
 #include <vector>
 
-PmergeMe::PmergeMe() : v_Comparisons(0)
+PmergeMe::PmergeMe()
 {
 
 }
 
-PmergeMe::PmergeMe(const PmergeMe &other) : v_MergeMe(other.v_MergeMe), D_mergeMe(other.D_mergeMe)
+PmergeMe::PmergeMe(const PmergeMe &other)
 {
-
+	(void)other;
 }
 
 PmergeMe::~PmergeMe()
@@ -21,119 +21,138 @@ PmergeMe::~PmergeMe()
 
 }
 
-void	PmergeMe::v_Init(int argc, char **argv)
+int		PmergeMe::jacobsthal(int n)
 {
+	if (n == 0)
+		return 0;
+	if (n == 1)
+		return 1;
+	int prev = 0;
+	int curr = 1;
+	for (int i = 2; i <= n; ++i)
+	{
+		int next = prev + 2 * curr;
+		prev = curr;
+		curr = next;
+	}
+	return curr;
+}
+
+int		PmergeMe::v_GetInsertionPoint(const std::vector <int> &v_MergeMe, int value)
+{
+	int low = 0; 
+	int high = v_MergeMe.size() - 1;
+
+	while (low <= high)
+	{
+		int mid = (low + high) / 2;
+		if (v_MergeMe[mid] < value)
+			low = mid + 1;
+		else if (value < v_MergeMe[mid])
+			high = mid - 1;
+		else
+			return mid;
+	}
+	return low;
+}
+
+void	PmergeMe::v_InsertionSort(std::vector <int> &v_MergeMe)
+{
+	for (size_t i = 0; i < v_MergeMe.size(); i++)
+	{
+		int key = v_MergeMe[i];
+		int j = i - 1;
+
+		while (j >= 0 && key < v_MergeMe[j])
+		{
+			v_MergeMe[j + 1] = v_MergeMe[j];
+			j--;
+		}
+		v_MergeMe[j + 1] = key;
+	}
+}
+
+void	PmergeMe::v_Insert(std::vector <int> &v_MergeMe, int value, int pos)
+{
+	v_MergeMe.insert(v_MergeMe.begin() + pos, value);
+}
+
+std::vector <int>	PmergeMe::v_PendingElement(int n)
+{
+	std::vector <int> v_Order;
+	
+	for (int i = 0;; i++)
+	{
+		int j = jacobsthal(i);
+		if (j >= n)
+			break ;
+		v_Order.push_back(j);
+	}
+	v_Order.push_back(n);
+	std::vector <int> v_FinalOrder;
+	for (size_t i = 0; i + 1 < v_Order.size(); i += 2)
+	{
+		for (int j = v_Order[i + 1]; j >= v_Order[i]; j--)
+			v_FinalOrder.push_back(j);
+	}
+	return v_FinalOrder;
+}
+
+void	PmergeMe::v_MergeInsertionSort(std::vector <int> &v_MergeMe)
+{
+	if (v_MergeMe.size() < 2)
+		return ;
+	std::vector <int> v_Sorted, v_Pending;
+	for (size_t i = 0; i < v_MergeMe.size(); i += 2)
+	{
+		if (i + 1 < v_MergeMe.size())
+		{
+			if (v_MergeMe[i] < v_MergeMe[i + 1])
+			{
+				v_Sorted.push_back(v_MergeMe[i]);
+				v_Pending.push_back(v_MergeMe[i + 1]);
+			}
+			else
+			{
+				v_Sorted.push_back(v_MergeMe[i + 1]);
+				v_Pending.push_back(v_MergeMe[i]);
+			}
+		}
+		else
+			v_Pending.push_back(v_MergeMe[i]);
+	}
+	v_InsertionSort(v_Sorted);
+	std::vector <int> v_Order = v_PendingElement(v_Pending.size());
+	for (size_t i = 0; i < v_Order.size(); i++)
+	{
+		int pos = v_GetInsertionPoint(v_Sorted, v_Pending[v_Order[i]]);
+		std::cout << "i: " << i << " - v_Order[i]: " << v_Order[i] <<" - "<< v_Pending[v_Order[i]] << std::endl;
+		if ((size_t)v_Order[i] < v_Pending.size())
+			v_Insert(v_Sorted, v_Pending[v_Order[i]], pos);
+	}
+	v_MergeMe = v_Sorted;
+}
+
+std::vector <int>	PmergeMe::v_Init(int argc, char **argv)
+{
+	std::vector <int> v_MergeMe;
+
 	for (int i = 1; i < argc; i++)
 		v_MergeMe.push_back(std::atoi(argv[i]));
-}
-
-std::vector <int> PmergeMe::v_SortLarger(std::vector <std::pair <int, int> > &v_Pairs)
-{
-	std::vector <int> v_Larger;
-	for (size_t i = 0; i < v_Pairs.size(); i++)
-		v_Larger.push_back(v_Pairs[i].first);
-	std::sort(v_Larger.begin(), v_Larger.end());
-	if (v_Larger.size() > 1)
-	{
-		std::vector <std::pair <int, int> > v_NewPairs = v_MakePairs();
-		return v_SortLarger(v_NewPairs);
-	}
-	else
-		return v_Larger;
-}
-
-std::vector <int>	PmergeMe::v_SortSmaller(std::vector <std::pair <int, int> > &v_Pairs)
-{
-	std::vector <int> v_Smaller;
-	for (size_t i = 0; i < v_Pairs.size(); i++)
-		v_Smaller.push_back(v_Pairs[i].second);
-	std::sort(v_Smaller.begin(), v_Smaller.end());
-	if (v_Smaller.size() > 1)
-	{
-		std::vector <std::pair <int, int> > v_NewPairs = v_MakePairs();
-		return v_SortSmaller(v_NewPairs);
-	}
-	else
-		return v_Smaller;
-}
-
-std::vector <int>	PmergeMe::v_Merge(std::vector <int> v_1, std::vector <int> v_2)
-{
-	std::vector <int> v_Merged;
-	while (v_1.empty() == false && v_2.empty() == false)
-	{
-		if (v_1.front() < v_2.front())
-		{
-			v_Merged.push_back(v_1.front());
-			v_1.erase(v_1.begin());
-		}
-		else
-		{
-			v_Merged.push_back(v_2.front());
-			v_2.erase(v_2.begin());
-		}
-	}
-	while (v_1.empty() == false)
-	{
-		v_Merged.push_back(v_1.front());
-		v_1.erase(v_1.begin());
-	}
-	while (v_2.empty() == false)
-	{
-		v_Merged.push_back(v_2.front());
-		v_2.erase(v_2.begin());
-	}
-	return v_Merged;
-}
-
-void	PmergeMe::v_MergeSequences()
-{
-	std::vector <std::pair <int, int> > v_Pairs = v_MakePairs();
-	std::vector <int> v_SortedLarger = v_SortLarger(v_Pairs);
-	std::vector <int> v_SortedSmaller = v_SortSmaller(v_Pairs);
-	v_MergeMe = v_Merge(v_SortedLarger, v_SortedSmaller);
-}
-
-std::vector <std::pair <int, int> >	PmergeMe::v_MakePairs()
-{
-	std::vector <std::pair <int, int> > v_Pairs;
-	size_t n = v_MergeMe.size();
-	std::sort(v_MergeMe.begin(), v_MergeMe.end());
-	for (size_t i = 0; i < n; i += 2)
-	{
-		if (i + 1 < n)
-			v_Pairs.push_back(std::make_pair(v_MergeMe[i], v_MergeMe[i + 1]));
-		else
-			v_Pairs.push_back(std::make_pair(v_MergeMe[i], -1));
-	}
-	return v_Pairs;
+	return v_MergeMe;
 }
 
 void	PmergeMe::v_Sort(int argc, char **argv)
 {
-	v_Init(argc, argv);
-	std::vector <std::pair <int, int> > v_Pairs = v_MakePairs();
-	v_MergeMe.clear();
-	size_t n = v_Pairs.size();
-	for (size_t i = 0; i < n; i++)
-	{
-		std::pair <int, int> v_TempPair = v_Pairs[i];
-		if (v_TempPair.second != -1)
-			v_MergeMe.insert(std::upper_bound(v_MergeMe.begin(), v_MergeMe.end(), v_TempPair.second), v_TempPair.second);
-		v_MergeMe.insert(std::upper_bound(v_MergeMe.begin(), v_MergeMe.end(), v_TempPair.first), v_TempPair.first);
-	}
-	v_Print();
-}
+	std::vector <int> v_MergeMe = v_Init(argc, argv);
+	v_MergeInsertionSort(v_MergeMe);
 
-void	PmergeMe::v_Print()
-{
-	for (size_t i = 0; i < v_MergeMe.size(); i++)
+	for (size_t i = 0; i < v_MergeMe.size(); ++i)
 	{
 		std::cout << v_MergeMe[i];
 		if (i < v_MergeMe.size() - 1)
 			std::cout << " ";
 	}
-	std::cout << std::endl;
 }
 
 PmergeMe::Exception::Exception(const std::string &message) : message(message)

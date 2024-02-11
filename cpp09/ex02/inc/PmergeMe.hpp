@@ -16,14 +16,11 @@
 # include <cstdlib>
 # include <ctime>
 # include <sstream>
+# include <math.h>
 
 class PmergeMe
 {
 	private:
-
-		size_t				v_Comparisons;
-		std::vector <int> 	v_MergeMe;
-		std::deque	<int> 	D_mergeMe;
 
 		PmergeMe(const PmergeMe &other);
 
@@ -33,15 +30,18 @@ class PmergeMe
 		~PmergeMe();
 
 		PmergeMe	&operator = (const PmergeMe &other);
+		
 
-		void								v_Init(int argc, char **argv);
-		void								v_Sort(int argc, char **argv);
-		std::vector <std::pair <int, int> >	v_MakePairs();
-		std::vector <int>					v_SortLarger(std::vector <std::pair <int, int> > &v_Pairs);
-		std::vector <int>					v_SortSmaller(std::vector <std::pair <int, int> > &v_Pairs);
-		std::vector <int>					v_Merge(std::vector <int> v_1, std::vector <int> v_2);
-		void								v_MergeSequences();
-		void								v_Print();
+		int						jacobsthal(int n);
+		int						v_GetInsertionPoint(const std::vector <int> &v_MergeMe, int value);
+		void					v_InsertionSort(std::vector <int> &v_MergeMe);
+		void					v_Insert(std::vector <int> &_v_MergeMe, int value, int pos);
+		void					v_MergeInsertionSort(std::vector <int> &v_MergeMe);
+		void					v_Sort(int argc, char **argv);
+		std::vector <int>		v_PendingElement(int n);
+		std::vector <int>		v_Init(int argc, char **argv);
+
+
 
 		class Exception : public std::exception
 		{
