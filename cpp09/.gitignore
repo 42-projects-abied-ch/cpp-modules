@@ -1,0 +1,6 @@
+*.o
+*.obj
+__pycache__/
+btc
+PmergeMe
+RPN

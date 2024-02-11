@@ -1,1 +1,10 @@
-./PmergeMe $(seq 1 100000 | gshuf | head -n 30000)
+if [ ! -f PmergeMe ]; then
+    make
+fi
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: ./random_input.sh <n>"
+    exit 1
+fi
+
+./PmergeMe $(python3 test_script.py $1)
