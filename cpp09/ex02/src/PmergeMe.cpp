@@ -1,10 +1,4 @@
 #include "../inc/PmergeMe.hpp"
-#include <algorithm>
-#include <cstddef>
-#include <deque>
-#include <queue>
-#include <utility>
-#include <vector>
 
 PmergeMe::PmergeMe()
 {
