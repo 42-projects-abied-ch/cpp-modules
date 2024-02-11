@@ -123,9 +123,11 @@ void	PmergeMe::v_MergeInsertionSort(std::vector <int> &v_MergeMe)
 	std::vector <int> v_Order = v_PendingElement(v_Pending.size());
 	for (size_t i = 0; i < v_Order.size(); i++)
 	{
-		int pos = v_GetInsertionPoint(v_Sorted, v_Pending[v_Order[i]]);
 		if ((size_t)v_Order[i] < v_Pending.size())
+		{
+			int pos = v_GetInsertionPoint(v_Sorted, v_Pending[v_Order[i]]);
 			v_Insert(v_Sorted, v_Pending[v_Order[i]], pos);
+		}
 	}
 	v_MergeMe = v_Sorted;
 }
@@ -237,9 +239,12 @@ void	PmergeMe::d_MergeInsertionSort(std::deque <int> &d_MergeMe)
 	std::deque <int> d_Order = d_PendingElement(d_Pending.size());
 	for (size_t i = 0; i < d_Order.size(); i++)
 	{
-		int pos = d_GetInsertionPoint(d_Sorted, d_Pending[d_Order[i]]);
+		
 		if ((size_t)d_Order[i] < d_Pending.size())
+		{
+			int pos = d_GetInsertionPoint(d_Sorted, d_Pending[d_Order[i]]);
 			d_Insert(d_Sorted, d_Pending[d_Order[i]], pos);
+		}
 	}
 	d_MergeMe = d_Sorted;
 }
