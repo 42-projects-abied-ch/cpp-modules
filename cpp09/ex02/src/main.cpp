@@ -1,6 +1,4 @@
 #include "../inc/PmergeMe.hpp"
-#include <cstddef>
-#include <vector>
 
 int main(int argc, char **argv)
 {
@@ -13,6 +11,7 @@ int main(int argc, char **argv)
 		std::cerr << e.what() << std::endl;
 		return EXIT_FAILURE;
 	}
-	PmergeMe _mergeMeBaby;
-	_mergeMeBaby.v_Sort(argc, argv);
+	PmergeMe mergeMeBaby;
+	mergeMeBaby.v_FordJohnson(argc, argv);
+	mergeMeBaby.d_FordJohnson(argc, argv);
 }
