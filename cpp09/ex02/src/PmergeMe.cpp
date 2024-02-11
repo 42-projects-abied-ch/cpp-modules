@@ -4,6 +4,8 @@
 #include <ostream>
 #include <vector>
 
+int	comparisons = 0;
+
 PmergeMe::PmergeMe()
 {
 
@@ -44,9 +46,9 @@ int		PmergeMe::v_GetInsertionPoint(const std::vector <int> &v_MergeMe, int value
 	while (low <= high)
 	{
 		int mid = (low + high) / 2;
-		if (v_MergeMe[mid] < value)
+		if (v_MergeMe[mid] < value && ++comparisons)
 			low = mid + 1;
-		else if (value < v_MergeMe[mid])
+		else if (value < v_MergeMe[mid] && ++comparisons)
 			high = mid - 1;
 		else
 			return mid;
@@ -82,7 +84,7 @@ std::vector <int>	PmergeMe::v_PendingElement(int n)
 	for (int i = 0;; i++)
 	{
 		int j = jacobsthal(i);
-		if (j >= n)
+		if (j >= n && ++comparisons)
 			break ;
 		v_Order.push_back(j);
 	}
@@ -103,9 +105,9 @@ void	PmergeMe::v_MergeInsertionSort(std::vector <int> &v_MergeMe)
 	std::vector <int> v_Sorted, v_Pending;
 	for (size_t i = 0; i < v_MergeMe.size(); i += 2)
 	{
-		if (i + 1 < v_MergeMe.size())
+		if (i + 1 < v_MergeMe.size() && ++comparisons)
 		{
-			if (v_MergeMe[i] < v_MergeMe[i + 1])
+			if (v_MergeMe[i] < v_MergeMe[i + 1] && ++comparisons)
 			{
 				v_Sorted.push_back(v_MergeMe[i]);
 				v_Pending.push_back(v_MergeMe[i + 1]);
@@ -123,7 +125,7 @@ void	PmergeMe::v_MergeInsertionSort(std::vector <int> &v_MergeMe)
 	std::vector <int> v_Order = v_PendingElement(v_Pending.size());
 	for (size_t i = 0; i < v_Order.size(); i++)
 	{
-		if ((size_t)v_Order[i] < v_Pending.size())
+		if ((size_t)v_Order[i] < v_Pending.size() && ++comparisons)
 		{
 			int pos = v_GetInsertionPoint(v_Sorted, v_Pending[v_Order[i]]);
 			v_Insert(v_Sorted, v_Pending[v_Order[i]], pos);
@@ -149,6 +151,7 @@ void	PmergeMe::v_FordJohnson(int argc, char **argv)
 	v_MergeInsertionSort(v_MergeMe);
 	v_Print(v_MergeMe, "after");
 	clock_t end = clock();
+	std::cout << "COMPARISONS: " << comparisons << std::endl;
 	printResult(argc - 1, "std::vector", (double)(end - start) / CLOCKS_PER_SEC * 1000000);
 }
 

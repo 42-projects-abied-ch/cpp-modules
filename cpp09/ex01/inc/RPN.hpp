@@ -34,6 +34,11 @@ class IntegerOverflow : public std::exception
 	virtual const char	*what() const throw();
 };
 
+class DivisionByZero : public std::exception
+{
+	virtual const char	*what() const throw();
+};
+
 void    RPN(std::string tokens);
 bool    isOperator(char c);
 

@@ -25,6 +25,11 @@ const char	*IntegerOverflow::what() const throw()
     return "notation resulted in integer overflow";
 }
 
+const char	*DivisionByZero::what() const throw()
+{
+	return "division by zero";	
+}
+
 bool    isOperator(char c)
 {
     return c == '*' || c == '/' || c == '-' || c == '+';
@@ -47,6 +52,8 @@ void checkForOverflow(int num1, int num2, char operation)
                 throw IntegerOverflow();
             break;
         case '/':
+			if (num2 == 0)
+				throw DivisionByZero();
             if (num1 == INT_MIN && num2 == -1)
                 throw IntegerOverflow();
             break;

@@ -10,7 +10,7 @@ int main(int argc, char **argv)
     }
     catch (std::exception &e)
     {
-        std::cout << "error: " << e.what() << std::endl;
+        std::cout << "Error" << std::endl;
         return EXIT_FAILURE;
     }
 }
