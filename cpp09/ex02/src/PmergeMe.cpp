@@ -1,10 +1,10 @@
 #include "../inc/PmergeMe.hpp"
+#include <ctime>
 
 PmergeMe::PmergeMe(int argc, char **argv)
 {
 	verifyInput(argc, argv);
 	setJacobsthal();
-	std::cout << "PmergeMeconstructor called" << std::endl;
 }
 
 PmergeMe::PmergeMe(const PmergeMe &)
@@ -129,20 +129,54 @@ void PmergeMe::v_insert(int elemCount, int elemSize, vector &v_top, vector &v_bo
 		v_mergeMe[i] = v_top[i];
 }
 
-void PmergeMe::v_mergeInsert(int numOfElement, int elemSizeOfElement)
+void PmergeMe::v_mergeInsert(int elemCount, int elemSize)
 {
-	if (numOfElement == 1)
+	if (elemCount == 1)
 		return;
 	vector v_top;
 	vector v_bottom;
-	v_sortPairs(numOfElement, elemSizeOfElement);
-	v_mergeInsert(numOfElement / 2, elemSizeOfElement * 2);
-	v_insert(numOfElement, elemSizeOfElement, v_top, v_bottom);
+	v_sortPairs(elemCount, elemSize);
+	v_mergeInsert(elemCount / 2, elemSize * 2);
+	v_insert(elemCount, elemSize, v_top, v_bottom);
 }
 
-void PmergeMe::printResult()
+void	PmergeMe::v_init(int argc, char **argv)
 {
-	std::cout << "sort time for std::vector: " << v_sortTime << "μs" << std::endl;
-	std::cout << "sort time for std::deque: " << d_sortTime_ << "μs" << std::endl;
+	for (int i = 1; i < argc; i++)
+		v_mergeMe.push_back(std::atoi(argv[i]));
+	if (isSorted(v_mergeMe) == true)
+		throw Exception(errorMessage("input already sorted"));
 }
 
+void	PmergeMe::v_sort(int argc, char **argv)
+{
+	clock_t start = clock();
+	v_init(argc, argv);
+	printContainer(v_mergeMe, "std::vector", "before");
+	v_mergeInsert(v_mergeMe.size(), 1);
+	printContainer(v_mergeMe, "std::vector", "after");
+	if (isSorted(v_mergeMe) == false)
+		throw Exception(errorMessage("input not sorted correctly, guess i will retry in 3 days"));
+	printResult(argc - 1, "std::vector", clock() - start);
+}
+
+std::string	errorMessage(const std::string &message)
+{
+	return "error: " + message;
+}
+
+void printResult(const int count, const std::string &what, const clock_t &time)
+{
+	std::cout << "time to sort " << count << " in container type " << what << ": " << time << "μs" << std::endl;
+}
+
+void	PmergeMe::verifyInput(int argc, char **argv)
+{
+	if (argc < 2)
+		throw PmergeMe::Exception(errorMessage("not enough arguments"));
+	for (int i = 1; i < argc; i++)
+	{
+		if (std::string(argv[i]).find_first_not_of("0123456789") != std::string::npos)
+			throw PmergeMe::Exception(errorMessage("invalid element"));
+	}
+}
