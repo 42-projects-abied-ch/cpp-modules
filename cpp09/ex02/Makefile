@@ -13,6 +13,9 @@ CXXFLAGS	= -Wall -Wextra -Werror -MP -MD -std=c++98 -g
 SRCS   	= \
         $(SRCS_DIR)/main.cpp \
         $(SRCS_DIR)/PmergeMe.cpp \
+        $(SRCS_DIR)/Vector.cpp \
+        $(SRCS_DIR)/DeQue.cpp \
+        $(SRCS_DIR)/Utils.cpp \
 
 OBJS	= $(SRCS:${SRCS_DIR}/%.cpp=${OBJS_DIR}/%.o)
 

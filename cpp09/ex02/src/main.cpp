@@ -6,9 +6,11 @@ int main(int argc, char **argv)
   	{
 		PmergeMe mergeMeBaby(argc, argv);
 		mergeMeBaby.v_sort(argc, argv);
+		std::cout << std::endl;
+		mergeMeBaby.d_sort(argc, argv);
   	}
   	catch (const std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
   	}
 }
