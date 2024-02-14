@@ -1,80 +1,115 @@
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
-#include <ostream>
-# pragma once
-
-# include <string>
-# include <exception>
-# include <vector>
-# include <iostream>
+# include <ctime>
 # include <deque>
-# include <algorithm>
-# include <fstream>
-# include <string>
-# include <cctype>
-# include <cstdlib>
-# include <ctime>
-# include <sstream>
-# include <math.h>
-# include <bits/types/clock_t.h>
-# include <cstddef>
-# include <ctime>
+# include <iostream>
 # include <vector>
-# include <iomanip>
+# include <string>
+# include <cstdlib>
+
+// typedefs for shorter lines
+typedef std::vector<int>	vector;
+typedef vector::iterator	v_it;
+typedef std::deque<int>		deque;
+typedef deque::iterator		d_it;
+
+// defines for constants/error messages
+# define VEC_TYPE "std::vector"
+# define DEQ_TYPE "std:::deque"
+# define ERR_NOT_SORTED "input not sorted correctly, guess i will retry in 3 days"
+# define ERR_SORTED "input already sorted"
+# define ERR_ARGC "not enough arguments"
+# define ERR_INVALID "invalid element"
+# define ERROR "error: "
 
 class PmergeMe
 {
 	private:
 
-		PmergeMe(const PmergeMe &other);
+		// track comparisons by adding this to each if condition's body
+		int			comparisons;
+
+		vector		v_mergeMe;
+		deque		d_mergeMe;
+
+		int 		j_index;
+		// store the jacobsthal sequence in an integer array instead of computing it every time
+		int 		jacobsthal[30];
+		// keep tracf numbers
+		int 		insertCount;
+
+		void 		setJacobsthal();
+		int 		getNextIndex(int index);
+
+		void		v_init(int argc, char **argv);
+		void		v_mergeInsert(int elemCount, int elemelemSize);
+		void		v_sortPairs(int elemCount, int elemSize);
+		void		v_makePairs(int elemCount, int elemSize, vector &main, vector &sub);
+		void		v_insert(int elemCount, int elemSize, vector &main, vector &sub);
+		void		v_binarySearch(vector &v_top, vector &v_bottom, size_t index, size_t elemSize);
+
+		void		d_init(int argc, char **argv);
+		void		d_mergeInsert(int elemCount, int elemelemSize);
+		void		d_sortPairs(int elemCount, int elemSize);
+		void		d_makePairs(int elemCount, int elemSize, deque &main, deque &sub);
+		void		d_insert(int elemCount, int elemSize, deque &main, deque &sub);
+		void		d_binarySearch(deque &v_top, deque &v_bottom, size_t index, size_t elemSize);
+		
+		PmergeMe(const PmergeMe &);
+		const 		PmergeMe &operator=(const PmergeMe &);
 
 	public:
 
-		PmergeMe();
 		~PmergeMe();
+		PmergeMe();
+		PmergeMe(int argc, char **argv);
 
-		PmergeMe	&operator = (const PmergeMe &other);
-		
+		void 		v_sort(int argc, char **argv);
+		void 		d_sort(int argc, char **argv);
 
-		int						jacobsthal(int n);
-
-		int						v_GetInsertionPoint(const std::vector <int> &v_MergeMe, int value);
-		void					v_InsertionSort(std::vector <int> &v_MergeMe);
-		void					v_Insert(std::vector <int> &_v_MergeMe, int value, int pos);
-		void					v_MergeInsertionSort(std::vector <int> &v_MergeMe);
-		std::vector <int>		v_PendingElement(int n);
-		std::vector <int>		v_Init(int argc, char **argv);
-		void					v_FordJohnson(int argc, char **argv);
-
-		int						d_GetInsertionPoint(const std::deque <int> &d_MergeMe, int value);
-		void					d_InsertionSort(std::deque <int> &d_MergeMe);
-		void					d_Insert(std::deque <int> &_d_MergeMe, int value, int pos);
-		void					d_MergeInsertionSort(std::deque <int> &d_MergeMe);
-		std::deque <int>		d_PendingElement(int n);
-		std::deque <int>		d_Init(int argc, char **argv);
-		void					d_FordJohnson(int argc, char **argv);
+		void		verifyInput(int argc, char **argv);
 
 		class Exception : public std::exception
 		{
 			private:
 
-				const std::string message;
+				const std::string 		message;
 
 			public:
 
 				Exception(const std::string &message);
-				virtual ~Exception() throw();
-				virtual const char	*what() const throw();
+				virtual ~Exception() 	throw();
+				virtual const char		*what() const throw();
 		};
 };
 
-void				v_Print(std::vector <int> &v_MergeMe, const std::string &v_When);
-void				d_Print(std::deque <int> &d_MergeMe, const std::string &d_When);
+std::string	errorMessage(const std::string &message);
 
-void				printResult(int c_ElemCount, const std::string &c_Type, double c_RunTime);
+template <typename T>
+void	printContainer(T &container, const std::string &what, const std::string &when)
+{
+	std::cout << what << " " << when << ":\n\n[";
+	for (size_t i = 0; i < container.size(); i++)
+	{
+		std::cout << container[i];
+		if (i < container.size() - 1)
+			std::cout  << ", ";
+	}	
+	std::cout << "]\n" << std::endl;
+}
 
-void				verifyInput(int argc, char **argv);
-std::string			errorMessage(const std::string &message);
+template <typename T>
+bool	isSorted(T &container)
+{
+	for (size_t i = 0; i < container.size() - 1; i++)
+	{
+		if (container[i] > container[i + 1])
+			return false;
+	}
+	return true;
+}
+
+void printResult(const int count, const std::string &what, const clock_t &time, int comparisons);
 
 #endif
