@@ -1,10 +1,10 @@
 # include "../inc/PmergeMe.hpp"
 
-void PmergeMe::d_sortPairs(int num, int elemSize)
+void PmergeMe::d_sortPairs(int elemCount, int elemSize)
 {
 	d_it it = d_mergeMe.begin();
 
-	for (int i = 0; i < num - 1; i += 2)
+	for (int i = 0; i < elemCount - 1; i += 2)
 	{
 		d_it first = it + i * elemSize, second = it + (i + 1) * elemSize;
 
