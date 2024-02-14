@@ -1,5 +1,6 @@
 #include "../inc/PmergeMe.hpp"
 
+// verifies input, initialize Jacobsthal constant & constructs the PmergeMe object
 PmergeMe::PmergeMe(int argc, char **argv)
 {
 	verifyInput(argc, argv);
@@ -21,6 +22,7 @@ PmergeMe::~PmergeMe()
 
 }
 
+// std::exception constructor overload for simple & centralized error handling
 PmergeMe::Exception::Exception(const std::string &message) : message(message)
 {
 

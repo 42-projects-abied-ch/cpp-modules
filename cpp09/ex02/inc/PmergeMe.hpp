@@ -16,7 +16,7 @@ typedef deque::iterator		d_it;
 
 // defines for constants/error messages
 # define VEC_TYPE "std::vector"
-# define DEQ_TYPE "std:::deque"
+# define DEQ_TYPE "std::deque"
 # define ERR_NOT_SORTED "input not sorted correctly, guess i will retry in 3 days"
 # define ERR_SORTED "input already sorted"
 # define ERR_ARGC "not enough arguments"
@@ -89,14 +89,17 @@ std::string	errorMessage(const std::string &message);
 template <typename T>
 void	printContainer(T &container, const std::string &what, const std::string &when)
 {
-	std::cout << what << " " << when << ":\n\n[";
+	if (what != ERR_SORTED)
+		std::cout << what << " " << when << ":\n[";
+	else
+		std::cout << "[";
 	for (size_t i = 0; i < container.size(); i++)
 	{
 		std::cout << container[i];
 		if (i < container.size() - 1)
 			std::cout  << ", ";
 	}	
-	std::cout << "]\n" << std::endl;
+	std::cout << "]" << std::endl;
 }
 
 template <typename T>
