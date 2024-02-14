@@ -10,7 +10,7 @@ improved performance especially on small or partially sorted datasets.
 
 ## how the algorithm works
 
-### initial pair sortin
+### initial pair sorting
 
 the algorithm begins by sorting adjacent pairs of elements throughout the list. this step ensures that the elements are partially ordered, which is crucial for the **efficient merging and insertion** that follows.
 
@@ -37,9 +37,9 @@ this efficiency comes at the cost of increased space complexity due to the need 
 #### memory allocation
 
 *   **vector:** a vector allocates memory in contiguous blocks. when it runs out of space, it needs to:
-*       allocate a larger block of memory
-*       copy the existing elements into the new block
-*       free the old block
+1.  allocate a larger block of memory
+2.  copy the existing elements into the new block
+3.  free the old block
 ->  expensive reallocations.
 
 *   **deque:** a deque (double-ended queue) allocates memory in chunks or blocks of a fixed size, which are not necessarily contiguous.
