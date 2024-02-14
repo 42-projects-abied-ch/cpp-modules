@@ -1,10 +1,10 @@
 # include "../inc/PmergeMe.hpp"
 
-void PmergeMe::v_sortPairs(int num, int elemSize)
+void PmergeMe::v_sortPairs(int elemCount, int elemSize)
 {
 	v_it it = v_mergeMe.begin();
 
-	for (int i = 0; i < num - 1; i += 2)
+	for (int i = 0; i < elemCount - 1; i += 2)
 	{
 		v_it first = it + i * elemSize;
 		v_it second = it + (i + 1) * elemSize;
