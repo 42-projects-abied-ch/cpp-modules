@@ -12,16 +12,63 @@ improved performance especially on small or partially sorted datasets.
 
 ### initial pair sorting
 
-the algorithm begins by sorting adjacent pairs of elements throughout the list. this step ensures that the elements are partially ordered, which is crucial for the **efficient merging and insertion** that follows.
+the algorithm begins by sorting adjacent pairs of elements throughout the list. 
+
+```cpp
+	for (int i = 0; i < elemCount - 1; i += 2)
+	{
+		it first = it + i * elemSize;
+		it second = it + (i + 1) * elemSize;
+
+		if (*first < *second) // swap the pair if out of order
+			std::swap_ranges(first, second, second);
+	}
+```
+
+this step ensures that the elements are partially ordered, which is crucial for the **efficient merging and insertion** that follows.
 
 ### division into top and bottom sequences
 
-the core of the algorithm lies in its unique merge-insertion process. elements from the bottom sequence are inserted into the top sequence at their correct positions.
-this is done using binary search to determine the correct insertion point for each element, significantly reducing the number of comparisons needed.
+the algorithm divides the sorted pairs into two containers, v_top and v_bottom, based on their position, to streamline the merge-insertion process.
+
+```cpp
+	for (int i = 0; i < elemCount; ++i)
+	{
+		if (i == elemCount - 1 || i % 2 == 1)
+			bottom.insert(v_bottom.end(), it + i * elemSize, it + (i + 1) * elemSize);
+		else if (i % 2 == 0)
+			top.insert(v_top.end(), it + i * elemSize, it + (i + 1) * elemSize);
+	}
+```
+
+### binary search and insertion
+
+for inserting elements from bottom into top, the algorithm uses a binary search to find the correct insertion point, minimizing comparisons.
+
+```cpp
+	while (left <= right)
+	{
+		int mid = left + (right - left) / 2;
+		if (top[mid * elemSize] < *bottom_it)
+			left = mid + 1;
+		else
+			right = mid - 1;
+	}
+	top.insert(top_it + left * elemSize, bottom_it, bottom_it + elemSize);
+```
 
 ### recursive sorting
 
-to manage larger datasets, the algorithm employs a recursive approach. the merge-insertion process is applied to increasingly smaller subsets of the list, enhancing efficiency. this recursive division continues until the subsets are sufficiently small to be efficiently sorted and merged, at which point the algorithm begins to combine these sorted subsets back into a fully sorted list.
+the sorting process is applied recursively to subsets of the dataset, enhancing the algorithm's efficiency through a divide-and-conquer approach.
+
+```cpp
+	if (elemCount == 1)
+		return; // base case - a single element is already sorted
+	top, bottom; // temporary containers for holding elements during the sorting process
+	v_sortPairs(elemCount, elemSize); // initial pair sorting
+	v_mergeInsert(elemCount / 2, elemSize * 2); // recursive call for sorting smaller subsets
+	v_insert(elemCount, elemSize, top, bottom); // merge & insert sorted elements
+```
 
 ## complexity analysis
 
