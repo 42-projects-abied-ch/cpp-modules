@@ -23,6 +23,11 @@ typedef deque::iterator		d_it;
 # define ERR_INVALID "invalid element"
 # define ERROR "error: "
 
+# define BOLD "\033[1m"
+# define RED "\033[31m"
+# define BOLD_RED "\033[1;31m"
+# define RESET "\033[0m"
+
 class PmergeMe
 {
 	private:
@@ -89,8 +94,9 @@ std::string	errorMessage(const std::string &message);
 template <typename T>
 void	printContainer(T &container, const std::string &what, const std::string &when)
 {
+	std::cout << BOLD_RED;
 	if (what != ERR_SORTED)
-		std::cout << what << " " << when << ":\n[";
+		std::cout << what << " " << when << ":\n" << RESET << "[";
 	else
 		std::cout << "[";
 	for (size_t i = 0; i < container.size(); i++)
@@ -99,7 +105,7 @@ void	printContainer(T &container, const std::string &what, const std::string &wh
 		if (i < container.size() - 1)
 			std::cout  << ", ";
 	}	
-	std::cout << "]" << std::endl;
+	std::cout << "]\n" << std::endl;
 }
 
 template <typename T>

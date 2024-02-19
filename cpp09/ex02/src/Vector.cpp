@@ -52,7 +52,7 @@ void PmergeMe::v_binarySearch(vector &v_top, vector &v_bottom, size_t index, siz
 // separates elements into two vectors ('v_top' abd 'v_bottom') based on their position
 // elements at even positions go into 'v_top' and odd positions into 'v_bottom'
 // @param elemCount - total number of elements to be distributed
-// @param elemSize - size of each element, used for offset calculation
+// @param elemSize - number of pairs, used for offset calculation
 // @param v_top - the vector for storing elements from even positions 
 // @param v_bottom - the vector for storing elements from odd positions
 void PmergeMe::v_makePairs(int elemCount, int elemSize, vector &v_top, vector &v_bottom)
