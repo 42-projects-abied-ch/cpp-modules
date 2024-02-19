@@ -3,7 +3,7 @@ import sys
 import subprocess
 import os
 
-def generate_random_numbers(n, range_start=1, range_end=2147483647):
+def generate_random_numbers(n, range_start=1, range_end=100):
     return random.sample(range(range_start, range_end + 1), n)
 
 if __name__ == "__main__":

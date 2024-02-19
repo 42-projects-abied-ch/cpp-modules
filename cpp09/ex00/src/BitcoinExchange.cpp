@@ -102,9 +102,9 @@ void	BTCExchange::dateOverflow(const std::string &date) const
 	int year = std::atoi(date.substr(0, MINUS_POS1).c_str());
 	int month = std::atoi(date.substr(MINUS_POS1 + 1, MINUS_POS2).c_str());
 	int day = std::atoi(date.substr(MINUS_POS2 + 1).c_str());
-	if (month > 12)
+	if (month > 12 || month < 1)
 		throw BTCExchangeException(formatError(month, MONTH_NOT_VALID));
-	else if (day > 31)
+	else if (day > 31 || day < 1)
 		throw BTCExchangeException(formatError(day, DAY_NOT_VALID));
 	else if (month == 2 && day > 28 + isLeapYear(year))
 		throw BTCExchangeException(formatError(day, DAY_NOT_VALID));

@@ -118,9 +118,7 @@ void RPN(std::string tokens)
         if (tokens[i] == ' ')
             continue ;
         else if (isOperator(tokens[i]) == true)
-        {
             performOperation(stk, tokens[i]);
-        } 
         else
             stk.push(tokens[i] - '0');
     }
