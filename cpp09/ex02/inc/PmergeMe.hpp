@@ -7,6 +7,7 @@
 # include <vector>
 # include <string>
 # include <cstdlib>
+# include <limits.h>
 
 // typedefs for shorter lines
 typedef std::vector<int>	vector;
@@ -21,6 +22,8 @@ typedef deque::iterator		d_it;
 # define ERR_SORTED "input already sorted"
 # define ERR_ARGC "not enough arguments"
 # define ERR_INVALID "invalid element"
+# define ERR_OVERFLOW "integer overflow"
+# define ERR_EMPTY_STRING "empty string in input"
 # define ERROR "error: "
 
 # define BOLD "\033[1m"
@@ -94,11 +97,10 @@ std::string	errorMessage(const std::string &message);
 template <typename T>
 void	printContainer(T &container, const std::string &what, const std::string &when)
 {
-	std::cout << BOLD_RED;
 	if (what != ERR_SORTED)
-		std::cout << what << " " << when << ":\n" << RESET << "[";
+		std::cout << BOLD_RED << what << " " << when << ":\n" << RESET << "[";
 	else
-		std::cout << "[" << RESET;
+		std::cout << "[";
 	for (size_t i = 0; i < container.size(); i++)
 	{
 		std::cout << container[i];

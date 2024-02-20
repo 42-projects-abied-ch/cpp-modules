@@ -18,18 +18,39 @@ void printResult(const int size, const std::string &what, const clock_t &time, i
 	std::cout << "sorted " << what << " of size " << size << " in " <<  time << " μs (microseconds) and " << comparisons << " comparisons" << std::endl;
 }
 
+bool	isOverflow(const std::string &str)
+{
+	int n = 0;
+	for (size_t i = 0; i < str.size(); i++)
+	{
+    	if (str[i] < '0' || str[i] > '9')
+            return true;
+        if (n > INT_MAX / 10 || (n == INT_MAX / 10 && str[i] - '0' > INT_MAX % 10))
+            return true;
+        n = n * 10 + str[i] - '0';
+    }
+    return false;
+}
+
 // verifies the command line input for the correct format of arguments
 // throws an exception if:
 //		- the number of arguments is less than 2
 //		- any argument is not a number (thus implicitly excluding negative numbers)
+// 		- integer overflow
+// deliberately not storing the input directkly because the goal is to compare the performance 
+// of vector & deque including the insertion/allocation process
 void	PmergeMe::verifyInput(int argc, char **argv)
 {
 	if (argc < 2)
 		throw PmergeMe::Exception(errorMessage(ERR_ARGC));
 	for (int i = 1; i < argc; i++)
 	{
+		if (std::string(argv[i]).empty() == true)
+			throw PmergeMe::Exception(errorMessage(ERR_EMPTY_STRING));
 		if (std::string(argv[i]).find_first_not_of("0123456789") != std::string::npos)
 			throw PmergeMe::Exception(errorMessage(ERR_INVALID));
+		if (isOverflow(argv[i]) == true)
+			throw PmergeMe::Exception(errorMessage(ERR_OVERFLOW));
 	}
 }
 
