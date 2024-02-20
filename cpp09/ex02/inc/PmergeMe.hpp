@@ -98,7 +98,7 @@ void	printContainer(T &container, const std::string &what, const std::string &wh
 	if (what != ERR_SORTED)
 		std::cout << what << " " << when << ":\n" << RESET << "[";
 	else
-		std::cout << "[";
+		std::cout << "[" << RESET;
 	for (size_t i = 0; i < container.size(); i++)
 	{
 		std::cout << container[i];
