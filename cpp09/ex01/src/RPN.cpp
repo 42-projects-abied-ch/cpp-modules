@@ -48,7 +48,10 @@ void checkForOverflow(int num1, int num2, char operation)
                 throw IntegerOverflow();
             break;
         case '*':
-            if (num1 != 0 && (num2 > INT_MAX / num1 || num2 < INT_MIN / num1))
+            if ((num1 > 0 && num2 > 0 && num1 > INT_MAX / num2) || 
+                (num1 < 0 && num2 < 0 && num1 < INT_MAX / num2) ||
+                (num1 > 0 && num2 < 0 && num2 < INT_MIN / num1) ||
+                (num1 < 0 && num2 > 0 && num1 < INT_MIN / num2))
                 throw IntegerOverflow();
             break;
         case '/':
