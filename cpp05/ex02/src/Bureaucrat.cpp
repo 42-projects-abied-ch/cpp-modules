@@ -12,7 +12,16 @@ Bureaucrat::Bureaucrat()
 
 Bureaucrat::Bureaucrat(const std::string name, int grade) : _name(name), _grade(grade)
 {
-
+	if (_grade > 150)
+	{
+		std::cout << "error: [" << _grade << "] is too low - capping to 150\n" << std::endl;
+		_grade = 150;
+	}
+	else if (_grade < 1)
+	{
+		std::cout << "error: [" << _grade << "] is too high - capping to 1\n" << std::endl;
+		_grade = 1;
+	}
 }
 
 Bureaucrat::Bureaucrat(const Bureaucrat &copy) : _name(copy._name), _grade(copy._grade)
