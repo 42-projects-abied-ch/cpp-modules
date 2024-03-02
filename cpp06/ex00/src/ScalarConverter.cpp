@@ -138,7 +138,7 @@ void    ScalarConverter::printChar() const
 	if (std::isprint(ch) == true)
 		std::cout << "Char:\t[" << ch << "]" << std::endl;
 	else
-		std::cerr << "Char:\t[Is Not Printable]" << std::endl;
+		std::cerr << "Char:\t[Not Printable]" << std::endl;
 	std::cout << "Int:\t[" << static_cast<int>(ch) << "]" << std::endl;
 	std::cout << "Float:\t[" << static_cast<float>(ch) << "]" << std::endl;
 	std::cout << "Double:\t[" << static_cast<double>(ch) << "]" << std::endl;
@@ -146,7 +146,7 @@ void    ScalarConverter::printChar() const
 
 void    ScalarConverter::printInt() const
 {
-	long    overflowCheck = std::strtol(this->input.c_str(), NULL, 10);
+	long    overflowCheck = strtol(this->input.c_str(), NULL, 10);
 	int     n = overflowCheck;
 
 	if (overflowCheck > INT_MAX || overflowCheck < INT_MIN)
@@ -156,8 +156,9 @@ void    ScalarConverter::printInt() const
 	}
 	if (n >= CHAR_MIN && n <= CHAR_MAX)
 	{
-		if (std::isprint(n) == true)
-			std::cout << "Char: [" << static_cast<char>(n) << "]" << std::endl;
+		char ch = static_cast<char>(n);
+		if (std::isprint(ch))
+			std::cout << "Char:\t[" << ch << "]" << std::endl;
 		else
 			std::cerr << "Char:\t[Not Printable]" << std::endl;
 	}
@@ -178,7 +179,7 @@ void    ScalarConverter::printInt() const
 
 void    ScalarConverter::printDouble() const
 {
-	double  d = std::strtod(this->input.c_str(), NULL);
+	double  d = strtod(this->input.c_str(), NULL);
 	double  temp;
 
 	if (d >= CHAR_MIN && d <= CHAR_MAX)
@@ -222,7 +223,7 @@ void    ScalarConverter::printFloat() const
 	}
 	else
 		std::cerr << "Char:\t[Could Not Convert]" << std::endl;
-	if (f < INT_MIN || f > INT_MAX)
+	if (f < INT_MIN || f > (float)INT_MAX)
 		std::cerr << "Int:\t[Could Not Convert]" << std::endl;
 	else
 		std::cout << "Int:\t[" << static_cast<int>(f) << "]" << std::endl;
@@ -300,7 +301,7 @@ void    ScalarConverter::printConverted()
 	&ScalarConverter::printInf,
 	&ScalarConverter::printNonSense
 	};
-	if (this->dataType == UNDEFINED)
+	if (dataType == UNDEFINED)
 		this->setType();
 	(this->*(out[this->dataType]))();
 }
